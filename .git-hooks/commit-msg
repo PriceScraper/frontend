@@ -8,3 +8,5 @@ git-conventional-commits commit-msg-hook "$commit_message"
 
 # Windows command to enable local check, execute in root git folder: icacls .git-hooks /grant USER:RX
 # Linux command to enable local check, execute in root git folder: chmod +x '.git-hooks/commit-msg'
+
+# After making file executable, add git hooks folder: git config core.hooksPath '.git-hooks'
