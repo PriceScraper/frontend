@@ -10,8 +10,6 @@ import Navigation from './components/navigation/Navigation';
 import {Box, Container, CssBaseline} from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 
-
-
 function App() {
     return <BrowserRouter>
         <Box sx={{display: 'flex'}}>
