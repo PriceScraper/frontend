@@ -6,6 +6,8 @@ commit_message="$1"
 # use git-conventional-commits, see https://github.com/qoomon/git-conventional-commits
 git-conventional-commits commit-msg-hook "$commit_message"
 
+# In order for the cmd above to work, make sure you have the git-convential-commits CLI installed: git-conventional-commits
+
 # Windows command to enable local check, execute in root git folder: icacls .git-hooks /grant USER:RX
 # Linux command to enable local check, execute in root git folder: chmod +x '.git-hooks/commit-msg'
 
