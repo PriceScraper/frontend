@@ -1,0 +1,23 @@
+.product-details {
+
+  width: 100%;
+  display: grid;
+
+
+
+  .product-details-hero-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    > img {
+      max-width: 100%;
+      height: 100%;
+    }
+
+    .product-details-comparison {
+      padding-top: 2rem;
+    }
+
+  }
+
+}
