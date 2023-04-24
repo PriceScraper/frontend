@@ -1,0 +1,26 @@
+.search-bar {
+  width: 100%;
+  display: block;
+}
+
+.search-results {
+  display: grid;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.search-result-container {
+  height: 3rem;
+
+  div {
+    height: 100%;
+    padding-left: 0.3rem;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+}
