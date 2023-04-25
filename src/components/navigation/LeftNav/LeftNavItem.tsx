@@ -13,3 +13,12 @@ export default function LeftNavItem(details : {path : string, icon:JSX.Element, 
         <ListItemText primary={details.text} />
     </ListItemButton>
 }
+
+export function LeftNavItemExternalUrl(details : {url : string, icon:JSX.Element, text:string}) {
+    return <ListItemButton onClick={() => window.location.href = details.url}>
+        <ListItemIcon>
+            {details.icon}
+        </ListItemIcon>
+        <ListItemText primary={details.text} />
+    </ListItemButton>
+}

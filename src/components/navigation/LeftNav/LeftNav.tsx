@@ -10,12 +10,17 @@ import LeftNavItem from "./LeftNavItem";
 import HomeIcon from "@mui/icons-material/Home";
 import List from "@mui/material/List";
 import LoginIcon from '@mui/icons-material/Login';
+import useAuth from "../../../hooks/useAuth";
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import {LeftNavItemExternalUrl} from "./LeftNavItem";
 
 export default function LeftNav({open, toggleDrawer, setOpen}: {
     open: boolean,
     toggleDrawer: () => void,
     setOpen: (e: boolean) => void
 }) {
+    const {isAuthenticated} = useAuth()
+
     function handleMouseAction(isEntering: boolean) {
         if (window.innerWidth > 1000) {
             if (isEntering) setOpen(true)
@@ -44,8 +49,10 @@ export default function LeftNav({open, toggleDrawer, setOpen}: {
         <Divider/>
         <List component="nav">
             <LeftNavItem path="/" text="Home" icon={<HomeIcon/>}/>
-            <Divider sx={{my: 1}}/>
-            <LeftNavItem path="/Login" text="Login" icon={<LoginIcon/>}/>
+            {!isAuthenticated && <>
+                <Divider sx={{my: 1}}/>
+                <LeftNavItemExternalUrl url={`${process.env.REACT_APP_BACKEND_URL}`} text="Login" icon={<LoginIcon/>}/>
+            </>}
         </List>
     </Drawer>
 }
