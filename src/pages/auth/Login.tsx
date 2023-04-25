@@ -11,8 +11,8 @@ export default function Login() {
         if(isAuthenticated) navigate("/")
         else if(token !== undefined) {
             setToken(token)
+            navigate("/")
         }
-        navigate("/")
     })
 
     return <>
