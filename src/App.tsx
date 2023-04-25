@@ -10,9 +10,11 @@ import {Box, Container, CssBaseline} from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {AuthProvider} from "./hooks/useAuth";
+import initAxiosInterceptors from "./config/axios.config";
 
 const queryClient = new QueryClient();
 
+initAxiosInterceptors()
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
