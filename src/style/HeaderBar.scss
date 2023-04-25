@@ -1,0 +1,19 @@
+.header-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  justify-content: center;
+  justify-items: center;
+  align-items: flex-start;
+
+  button {
+    margin-top: 0.6rem;
+  }
+
+  .action-area {
+    display: grid;
+    justify-items: end;
+    width: 100%;
+  }
+
+}

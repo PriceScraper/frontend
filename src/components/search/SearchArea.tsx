@@ -1,24 +1,24 @@
 import SearchBar from "./SearchBar";
 import SearchResult from "./SearchResult";
 import { useState } from "react";
-import { Product } from "../../models/Product";
+import { Item } from "../../models/Item";
 import "../../style/Search.scss";
 
 interface SearchAreaProps {
-  searchProductsHandler: (name: string) => Product[];
+  searchItemsHandler: (name: string) => Item[];
 }
 
-export default function SearchArea({ searchProductsHandler }: SearchAreaProps) {
-  const [searchResults, setSearchResults] = useState<Product[] | null>();
+export default function SearchArea({ searchItemsHandler }: SearchAreaProps) {
+  const [searchResults, setSearchResults] = useState<Item[] | null>();
 
   return (
     <>
       <SearchBar
-        searchHandler={(name) => setSearchResults(searchProductsHandler(name))}
+        searchHandler={(name) => setSearchResults(searchItemsHandler(name))}
       />
       <div className={"search-results"}>
-        {searchResults?.map((p, i) => (
-          <SearchResult key={i} product={p} />
+        {searchResults?.map((i) => (
+          <SearchResult key={i.id} item={i} />
         ))}
       </div>
     </>
