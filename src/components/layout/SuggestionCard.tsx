@@ -22,7 +22,7 @@ export default function SuggestionCard({
 }: SuggestionCardProps) {
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea component={"a"}>
         <CardMedia
           component="img"
           height="140"
