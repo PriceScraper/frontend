@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import SearchArea from "../components/search/SearchArea";
 import userEvent from "@testing-library/user-event";
+import { BrowserRouter } from "react-router-dom";
 
 test("renders SearchArea with a search result", () => {
   const fakeProduct = {
@@ -10,11 +11,13 @@ test("renders SearchArea with a search result", () => {
     price: 2.2,
   };
   render(
-    <SearchArea
-      searchProductsHandler={() => {
-        return [fakeProduct];
-      }}
-    />
+    <BrowserRouter>
+      <SearchArea
+        searchProductsHandler={() => {
+          return [fakeProduct];
+        }}
+      />
+    </BrowserRouter>
   );
 
   const input = screen.getByTestId("search");
