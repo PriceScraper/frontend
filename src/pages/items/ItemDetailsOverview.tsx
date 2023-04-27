@@ -11,7 +11,7 @@ export default function ItemDetailsOverview() {
 
   const { isLoading, isError, data } = useQuery(
     ["item", itemId],
-    () => fetchItem(itemId!),
+    () => fetchItem(parseInt(itemId!!)),
     {
       enabled: !!itemId,
     }

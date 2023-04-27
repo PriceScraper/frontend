@@ -1,20 +1,30 @@
 import SearchBar from "./SearchBar";
 import SearchResult from "./SearchResult";
 import { useState } from "react";
-import { Item } from "../../models/Item";
 import "../../style/Search.scss";
+import { ItemSearchDto } from "../../models/dtos/ItemSearchDto";
 
 interface SearchAreaProps {
-  searchItemsHandler: (name: string) => Item[];
+  searchItemsHandler: (name: string) => Promise<ItemSearchDto[]>;
+  cooldownInMillis?: number;
 }
 
-export default function SearchArea({ searchItemsHandler }: SearchAreaProps) {
-  const [searchResults, setSearchResults] = useState<Item[] | null>();
+export default function SearchArea({
+  searchItemsHandler,
+  cooldownInMillis = 3000,
+}: SearchAreaProps) {
+  const [searchResults, setSearchResults] = useState<ItemSearchDto[]>();
+  const [isOnSearchCooldown, setIsOnSearchCooldown] = useState<boolean>();
 
   return (
     <>
       <SearchBar
-        searchHandler={(name) => setSearchResults(searchItemsHandler(name))}
+        searchHandler={async (name) => {
+          if (name !== "" && isOnSearchCooldown) return;
+          setSearchResults(await searchItemsHandler(name));
+          setIsOnSearchCooldown(true);
+          setTimeout(() => setIsOnSearchCooldown(false), cooldownInMillis);
+        }}
       />
       <div className={"search-results"}>
         {searchResults?.map((i) => (

@@ -1,10 +1,10 @@
-import { Item } from "../../models/Item";
 import "../../style/Search.scss";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { Link } from "react-router-dom";
+import { ItemSearchDto } from "../../models/dtos/ItemSearchDto";
 
 interface SearchResultProps {
-  item: Item;
+  item: ItemSearchDto;
 }
 
 export default function SearchResult({ item }: SearchResultProps) {
