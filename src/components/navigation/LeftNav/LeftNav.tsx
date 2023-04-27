@@ -6,13 +6,11 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import LeftNavItem from "./LeftNavItem";
+import LeftNavItem, {LeftNavItemExternalUrl} from "./LeftNavItem";
 import HomeIcon from "@mui/icons-material/Home";
 import List from "@mui/material/List";
 import LoginIcon from '@mui/icons-material/Login';
 import useAuth from "../../../hooks/useAuth";
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import {LeftNavItemExternalUrl} from "./LeftNavItem";
 
 export default function LeftNav({open, toggleDrawer, setOpen}: {
     open: boolean,
