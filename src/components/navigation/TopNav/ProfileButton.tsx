@@ -30,12 +30,13 @@ export default function ProfileButton() {
             <MenuItem onClick={() => {
                 setAnchorEl(null)
                 setToken(null)
+                window.location.href = `${process.env.REACT_APP_BACKEND_URL}/logout`
             }}>Logout</MenuItem>
         </Menu>
     </>
 }
 
-function AvatarIcon(props: { avatar: string | null }) {
+export function AvatarIcon(props: { avatar: string | null }) {
     const sx = {w: 16, h: 16}
 
     if (props.avatar === null) return <Avatar sx={sx}>??</Avatar>

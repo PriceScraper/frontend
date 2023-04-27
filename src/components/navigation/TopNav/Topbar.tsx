@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import {styled} from "@mui/material/styles";
 import ProfileButton from "./ProfileButton";
+import TrackItemModalButton from "./TrackItemModal";
 
 const drawerWidth: number = 240;
 
@@ -59,7 +60,10 @@ export function TopBar({open, toggleDrawer}: { open: boolean, toggleDrawer: () =
             >
                 PriceScraper
             </Typography>
-            <ProfileButton />
+            <div>
+                <TrackItemModalButton/>
+                <ProfileButton/>
+            </div>
         </Toolbar>
     </AppBar>
 }
