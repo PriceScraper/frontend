@@ -10,7 +10,7 @@ export default function TrackItemModalButton() {
     const [open, setOpen] = useState(false)
     const {isAuthenticated} = useAuth()
 
-    if (!isAuthenticated) return <>Not authenticated</>
+    if (!isAuthenticated) return <></>
 
     return <>
         <IconButton id={"trackItemModalButton"} onClick={() => setOpen(true)}
