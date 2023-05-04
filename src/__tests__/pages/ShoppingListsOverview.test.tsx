@@ -7,7 +7,7 @@ import ShoppingListsOverview from "../../pages/shop/ShoppingListsOverview";
 
 test("renders shopping lists overview", async () => {
   const mock = jest.spyOn(ShoppingListService, "fetchShoppingListForUser");
-  mock.mockReturnValue(Promise.resolve(testShoppingList));
+  mock.mockReturnValue(Promise.resolve([testShoppingList]));
   const fakeShoppingList = testShoppingList;
   render(
     <QueryClientProvider client={new QueryClient()}>

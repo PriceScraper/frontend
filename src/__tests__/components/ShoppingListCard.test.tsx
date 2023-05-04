@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { testShoppingList } from "../../constants";
-import ShoppingListCard from "../../components/layout/ShoppingListCard";
+import ShoppingListCard from "../../components/layout/shoppinglists/ShoppingListCard";
 
 test("renders ShoppingListCard with shopping list", () => {
   const fakeShoppingList = testShoppingList;
