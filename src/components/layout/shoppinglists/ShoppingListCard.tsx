@@ -1,6 +1,6 @@
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
-import { findTrackedItemWithLowestPrice } from "../../utils/item.util";
-import { ShoppingList } from "../../models/ShoppingList";
+import { findTrackedItemWithLowestPrice } from "../../../utils/item.util";
+import { ShoppingList } from "../../../models/ShoppingList";
 
 interface ShoppingListCardProps {
   listNumber: number;
@@ -12,13 +12,13 @@ export default function ShoppingListCard({
   shoppingList,
 }: ShoppingListCardProps) {
   return (
-    <Card sx={{ display: "flex" }}>
+    <Card sx={{ display: "flex", border: "1px solid black" }}>
       <CardActionArea>
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: "1fr 2fr 3fr",
-            padding: "0.6rem",
+            gridTemplateColumns: "1fr 2fr 1fr",
+            boxSizing: "border-box",
             justifyItems: "center",
             justifyContent: "center",
           }}
@@ -27,7 +27,9 @@ export default function ShoppingListCard({
             sx={{
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
               width: "100%",
+              backgroundColor: "#bbdefb",
             }}
           >
             <Typography
@@ -40,9 +42,7 @@ export default function ShoppingListCard({
           </Box>
           <Box
             sx={{
-              paddingBottom: "0",
-              paddingTop: "0",
-              paddingLeft: "1rem",
+              padding: "1rem",
               display: "grid",
               justifyContent: "center",
               width: "100%",
@@ -69,17 +69,28 @@ export default function ShoppingListCard({
               variant="h6"
             >
               €
-              {shoppingList.items
-                .reduce(
-                  (prev, current) =>
-                    prev + findTrackedItemWithLowestPrice(current.trackedItems),
-                  0.0
-                )
-                .toFixed(2)}
+              {shoppingList.lines === null
+                ? 0
+                : shoppingList.lines
+                    .reduce(
+                      (prev, current) =>
+                        prev +
+                        (current.item.trackedItems !== null
+                          ? findTrackedItemWithLowestPrice(
+                              current.item.trackedItems
+                            )
+                          : 0),
+                      0.0
+                    )
+                    .toFixed(2)
+                    .toString()}
             </Typography>
           </Box>
           <Box
-            sx={{ paddingBottom: "0", paddingTop: "0", paddingLeft: "1rem" }}
+            sx={{
+              paddingBottom: "1rem",
+              paddingTop: "1rem",
+            }}
           >
             <ul
               style={{
@@ -90,14 +101,17 @@ export default function ShoppingListCard({
                 lineHeight: "1.15rem",
               }}
             >
-              {shoppingList.items.length > 3
-                ? shoppingList.items
-                    .slice(0, 2)
-                    .map((item) => <li key={item.id}>{item.name}</li>)
-                    .concat(<li key={"more"}>...</li>)
-                : shoppingList.items.map((item, index) => (
-                    <li key={index}>{item.name}</li>
-                  ))}
+              {shoppingList.lines !== null &&
+                (shoppingList.lines.length > 3
+                  ? shoppingList.lines
+                      .slice(0, 2)
+                      .map((line) => (
+                        <li key={line.item.id}>{line.item.name}</li>
+                      ))
+                      .concat(<li key={"more"}>...</li>)
+                  : shoppingList.lines.map((line) => (
+                      <li key={line.id}>{line.item.name}</li>
+                    )))}
             </ul>
           </Box>
         </Box>
