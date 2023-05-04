@@ -1,12 +1,18 @@
 import { Item } from "../models/Item";
-import { testItem } from "../constants";
+import { ItemSearchDto } from "../models/dtos/ItemSearchDto";
+import axios from "axios";
 
-export function searchItem(name: string): Item[] {
+export async function searchItem(name: string): Promise<ItemSearchDto[]> {
   if (name === "") return [];
-  return [testItem];
+  const res = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL!}/items?name=${name}`
+  );
+  return res.data;
 }
 
-export async function fetchItem(id: string): Promise<Item> {
-  console.log(testItem);
-  return testItem;
+export async function fetchItem(id: number): Promise<Item> {
+  const res = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL!}/items/${id}`
+  );
+  return res.data;
 }

@@ -10,7 +10,7 @@ export default function HeaderBar() {
   return (
     <div className={"header-bar"}>
       <div className={"search-area"}>
-        <SearchArea searchItemsHandler={searchItem} />
+        <SearchArea searchItemsHandler={searchItem} cooldownInMillis={750} />
       </div>
       <div className={"action-area"}>
         <Link to={"/shopping-lists"}>

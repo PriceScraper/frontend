@@ -1,16 +1,18 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import SearchArea from "../../components/search/SearchArea";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { testItem } from "../../constants";
 
-test("renders SearchArea with a search result", () => {
+test("renders SearchArea with a search result", async () => {
   const fakeProduct = testItem;
   render(
     <MemoryRouter>
       <SearchArea
         searchItemsHandler={(a: string) => {
-          return [fakeProduct];
+          return Promise.resolve([
+            { id: 1, name: fakeProduct.name, image: fakeProduct.image },
+          ]);
         }}
       />
     </MemoryRouter>
@@ -18,6 +20,7 @@ test("renders SearchArea with a search result", () => {
 
   const input = screen.getByTestId("search");
   act(() => userEvent.type(input, "abc"));
-  const name = screen.getByText(fakeProduct.name);
-  expect(name).toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.getByText(fakeProduct.name)).toBeInTheDocument()
+  );
 });
