@@ -11,6 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {AuthProvider} from "./hooks/useAuth";
 import initAxiosInterceptors from "./config/axios.config";
+import {ItemProvider} from "./hooks/useItems";
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,9 @@ function App() {
                         >
                             <Toolbar/>
                             <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                                <MainRouter/>
+                                <ItemProvider>
+                                    <MainRouter/>
+                                </ItemProvider>
                             </Container>
                         </Box>
                     </Box>
