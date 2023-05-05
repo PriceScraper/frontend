@@ -11,6 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {AuthProvider} from "./hooks/useAuth";
 import initAxiosInterceptors from "./config/axios.config";
+import {ItemProvider} from "./hooks/useItems";
 import {SnackbarProvider} from 'notistack';
 
 const queryClient = new QueryClient();
@@ -21,28 +22,30 @@ function App() {
     return (
         <SnackbarProvider maxSnack={5}>
             <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <BrowserRouter>
-                        <Box sx={{display: "flex"}}>
-                            <CssBaseline/>
-                            <Navigation/>
-                            <Box
-                                component="main"
-                                sx={{
-                                    flexGrow: 1,
-                                    height: "100vh",
-                                    overflow: "auto",
-                                }}
-                            >
-                                <Toolbar/>
-                                <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+            <AuthProvider>
+                <BrowserRouter>
+                    <Box sx={{display: "flex"}}>
+                        <CssBaseline/>
+                        <Navigation/>
+                        <Box
+                            component="main"
+                            sx={{
+                                flexGrow: 1,
+                                height: "100vh",
+                                overflow: "auto",
+                            }}
+                        >
+                            <Toolbar/>
+                            <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+                                <ItemProvider>
                                     <MainRouter/>
-                                </Container>
-                            </Box>
+                                </ItemProvider>
+                            </Container>
                         </Box>
-                    </BrowserRouter>
-                </AuthProvider>
-            </QueryClientProvider>
+                    </Box>
+                </BrowserRouter>
+            </AuthProvider>
+        </QueryClientProvider>
         </SnackbarProvider>
     );
 }
