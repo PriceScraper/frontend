@@ -8,7 +8,7 @@ interface SearchAreaProps {
   searchItemsHandler: (name: string) => Promise<ItemSearchDto[]>;
   cooldownInMillis?: number;
 }
-
+let keyCounter = 0
 export default function SearchArea({
   searchItemsHandler,
   cooldownInMillis = 3000,
@@ -28,7 +28,7 @@ export default function SearchArea({
       />
       <div className={"search-results"}>
         {searchResults?.map((i) => (
-          <SearchResult key={i.id} item={i} />
+          <SearchResult key={keyCounter++} item={i} />
         ))}
       </div>
     </>
