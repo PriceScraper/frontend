@@ -61,8 +61,8 @@ export function TopBar({open, toggleDrawer}: { open: boolean, toggleDrawer: () =
                 PriceScraper
             </Typography>
             <div>
-                <ProfileButton/>
                 <TrackItemModalButton/>
+                <ProfileButton/>
             </div>
         </Toolbar>
     </AppBar>

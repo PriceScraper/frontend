@@ -1,7 +1,7 @@
 import axios from "axios";
 import {getToken} from "../functions/authTokenStorage";
 
-axios.defaults.baseURL = "http://localhost:8080"
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
 export default function initAxiosInterceptors() {
     axios.interceptors.request.clear()
     axios.interceptors.request.use((conf) => {
