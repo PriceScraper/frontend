@@ -2,6 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {useDebounce} from 'use-debounce';
 import {Item} from "../models/Item";
 import axios from "axios";
+import {useSnackbar} from "notistack";
 
 const ItemContext = createContext<{
     items: Item[]
@@ -25,6 +26,7 @@ export function ItemProvider(props: { children: React.ReactNode }) {
     const [filter, setFilter] = useState('');
     const [value] = useDebounce(filter, 500);
     const [loading, setLoading] = useState(false)
+    const {enqueueSnackbar} = useSnackbar()
 
     useEffect(() => {
         try {
@@ -37,12 +39,18 @@ export function ItemProvider(props: { children: React.ReactNode }) {
                         setItems(res.data)
                         setLoading(false)
                     })
-                    .catch(err => console.log(err))
-            } else setItems([])
+                    .catch(err => {
+                        enqueueSnackbar(err, {variant: "error"})
+                    })
+            } else {
+                setItems([])
+                if (value.length > 0 && value.length < 3)
+                    enqueueSnackbar("Je moet minstens 3 karakters invullen voordat we beginnen te zoeken!", {variant: "info"})
+            }
         } catch {
             setLoading(false)
         }
-    }, [value])
+    }, [value, enqueueSnackbar])
 
     return <ItemContext.Provider value={{items, filter, setFilter, loading}}>
         {props.children}
