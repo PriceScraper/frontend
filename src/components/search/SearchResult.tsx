@@ -3,7 +3,6 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import {useNavigate} from "react-router-dom";
 import {ItemSearchDto} from "../../models/dtos/ItemSearchDto";
 import {Skeleton} from "@mui/material";
-import useItems from "../../hooks/useItems";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 interface SearchResultProps {
@@ -45,7 +44,6 @@ export function SearchResultsLoading() {
 }
 
 export function SeeAllResults() {
-    const {filter} = useItems()
     const navigate = useNavigate()
 
     return (
