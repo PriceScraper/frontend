@@ -1,15 +1,15 @@
 import "../../style/Search.scss";
 import "../../style/HeaderBar.scss";
-import {IconButton} from "@mui/material";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import {Link} from "react-router-dom";
+import { IconButton } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Link } from "react-router-dom";
 import SearchBar from "../search/SearchBar";
 
 export default function HeaderBar() {
   return (
     <div className={"header-bar"}>
       <div className={"search-area"}>
-          <SearchBar/>
+        <SearchBar />
       </div>
       <div className={"action-area"}>
         <Link to={"/shopping-lists"}>
@@ -18,7 +18,7 @@ export default function HeaderBar() {
             aria-label="shopping lists"
             size={"large"}
           >
-            <ListAltIcon />
+            <ShoppingCartIcon />
           </IconButton>
         </Link>
       </div>
