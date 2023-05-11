@@ -16,6 +16,9 @@ import {
 import EmptyHint from "../EmptyHint";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
+import { findTrackedItemWithLowestPrice } from "../../../utils/item.util";
+import { getShopLogoUrlByName } from "../../../utils/shop.util";
+import { getTotalByLines } from "../../../utils/shoppinglist.util";
 
 interface ShoppingListDialogProps {
   id: number;
@@ -94,7 +97,11 @@ export default function ShoppingListDialog({
               mutation.mutate(id);
               handleCloseDialog();
             }}
-            sx={{ height: "3rem", width: "3rem" }}
+            sx={{
+              height: "3rem",
+              width: "3rem",
+              color: "rgba(0, 0, 0, 0.87)",
+            }}
             aria-label="delete"
           >
             <DeleteIcon />
@@ -121,7 +128,11 @@ export default function ShoppingListDialog({
           <ul className={"shopping-list-dialog-products"}>
             {lines.map((line) => (
               <li
-                style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "2fr 1fr 1fr",
+                  fontSize: "1.1rem",
+                }}
                 key={line.item.id}
               >
                 <div>
@@ -143,10 +154,45 @@ export default function ShoppingListDialog({
                     })
                   }
                 />
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    alignItems: "center",
+                  }}
+                >
+                  {line.item.trackedItems !== null &&
+                    line.item.trackedItems.length > 0 &&
+                    "€" +
+                      (
+                        findTrackedItemWithLowestPrice(line.item.trackedItems)
+                          .itemPrices[0].price * line.quantity
+                      ).toFixed(2)}
+                  <img
+                    src={getShopLogoUrlByName(
+                      findTrackedItemWithLowestPrice(line.item.trackedItems)
+                        .shop.name
+                    )}
+                    alt={"shop logo"}
+                    style={{ height: "2rem", width: "2rem" }}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
+        <div>
+          <Typography
+            variant={"h2"}
+            sx={{
+              fontFamily: "'Source Sans Pro',sans-serif;",
+              fontSize: "1.2rem",
+              fontWeight: "600",
+            }}
+          >
+            €{getTotalByLines(lines)}
+          </Typography>
+        </div>
       </DialogContent>
     </Dialog>
   );
