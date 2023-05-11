@@ -15,6 +15,10 @@ import {
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { SlideTransition } from "../../components/layout/dialogs/Transitions";
+import {
+  getShopDominantColorByName,
+  getShopLogoUrlByName,
+} from "../../utils/shop.util";
 
 export default function ItemDetailsOverview() {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -68,6 +72,11 @@ export default function ItemDetailsOverview() {
   if (isLoading || isShoppingListsLoading) return <div>Loading...</div>;
   if (isError || isShoppingListsError || !data) return <div>Error...</div>;
 
+  const averagePrice =
+    data.trackedItems.length != 0
+      ? data.trackedItems.reduce((p, c) => p + c.itemPrices[0].price, 0) /
+        data.trackedItems.length
+      : 0;
   return (
     <MainContainer backTrackableTo={"/"}>
       <div className={"product-details"}>
@@ -77,30 +86,20 @@ export default function ItemDetailsOverview() {
             className={"product-details-img"}
             src={data?.image}
           />
-
           <div className={"product-details-comparison"}>
-            <PriceBar
-              logoUrl={"https://cdn.worldvectorlogo.com/logos/colruyt.svg"}
-              price={5.45}
-              percentageFilled={20}
-              color={"#F07E13"}
-            />
-            <PriceBar
-              logoUrl={
-                "https://www.carrefour.be/etc/clientlibs/carrefour/main/css/img/carrefour-logo.svg"
-              }
-              price={5.49}
-              percentageFilled={20}
-              color={"#004E9E"}
-            />
-            <PriceBar
-              logoUrl={
-                "https://logowik.com/content/uploads/images/delhaize8693.jpg"
-              }
-              price={5.49}
-              percentageFilled={20}
-              color={"rgb(207, 20, 49)"}
-            />
+            {data.trackedItems.map((trackedItem) => (
+              <PriceBar
+                key={trackedItem.url}
+                logoUrl={getShopLogoUrlByName(trackedItem.shop.name)!}
+                price={trackedItem.itemPrices[0].price}
+                percentageFilled={
+                  trackedItem.itemPrices[0].price / averagePrice + 1 > 100
+                    ? 100
+                    : trackedItem.itemPrices[0].price / averagePrice + 1
+                }
+                color={getShopDominantColorByName(trackedItem.shop.name)!}
+              />
+            ))}
           </div>
         </div>
         <div
@@ -138,6 +137,7 @@ export default function ItemDetailsOverview() {
           >
             {shoppingLists!.map((shoppingList) => (
               <MenuItem
+                key={shoppingList.id}
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "1fr 2fr",
@@ -163,6 +163,7 @@ export default function ItemDetailsOverview() {
         </div>
       </div>
       <Snackbar
+        sx={{ fontSize: "1.1rem" }}
         open={snackBarOpen}
         TransitionComponent={SlideTransition}
         autoHideDuration={6000}

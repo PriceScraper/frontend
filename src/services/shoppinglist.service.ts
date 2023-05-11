@@ -9,6 +9,7 @@ export async function fetchShoppingListForUser(): Promise<ShoppingList[]> {
 }
 
 export async function createShoppingListForUser(title: string) {
+  console.log("test");
   await axios.post(`${process.env.REACT_APP_BACKEND_URL!}/shoppinglists`, {
     title,
   });

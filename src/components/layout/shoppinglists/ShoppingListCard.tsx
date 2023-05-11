@@ -1,6 +1,6 @@
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
-import { findTrackedItemWithLowestPrice } from "../../../utils/item.util";
 import { ShoppingList } from "../../../models/ShoppingList";
+import { getTotalByLines } from "../../../utils/shoppinglist.util";
 
 interface ShoppingListCardProps {
   listNumber: number;
@@ -68,22 +68,7 @@ export default function ShoppingListCard({
               component="div"
               variant="h6"
             >
-              €
-              {shoppingList.lines === null
-                ? 0
-                : shoppingList.lines
-                    .reduce(
-                      (prev, current) =>
-                        prev +
-                        (current.item.trackedItems !== null
-                          ? findTrackedItemWithLowestPrice(
-                              current.item.trackedItems
-                            )
-                          : 0),
-                      0.0
-                    )
-                    .toFixed(2)
-                    .toString()}
+              €{getTotalByLines(shoppingList.lines)}
             </Typography>
           </Box>
           <Box

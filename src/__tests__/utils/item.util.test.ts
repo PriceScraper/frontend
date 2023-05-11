@@ -12,7 +12,9 @@ test("findTrackedItemWithLowestPrice returns lowest price", () => {
       new ItemPrice(1, null, "", 1.75),
     ]),
   ];
-  expect(findTrackedItemWithLowestPrice(trackedItems)).toBe(1.75);
+  expect(findTrackedItemWithLowestPrice(trackedItems).itemPrices[0].price).toBe(
+    1.75
+  );
 });
 
 test("findTrackedItemWithLowestPrice with empty prices should throw", () => {
