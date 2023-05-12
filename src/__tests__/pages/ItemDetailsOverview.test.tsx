@@ -12,6 +12,9 @@ test("renders item details overview", async () => {
     ShoppingListService,
     "fetchShoppingListForUser"
   );
+  jest.mock("../../hooks/useSettings", () => ({
+    useSettings: () => ({ whiteListedShops: ["aldi", "carrefour"] }),
+  }));
   mock.mockReturnValue(Promise.resolve(testItem));
   mockShoppingLists.mockReturnValue(Promise.resolve([]));
   const fakeProduct = testItem;

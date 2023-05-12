@@ -1,9 +1,15 @@
-import {Button, Dialog, DialogContent, DialogTitle, TextField,} from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import React from "react";
-import {SlideTransition as Transition} from "../dialogs/Transitions";
-import {useForm} from "react-hook-form";
-import {createShoppingListForUser} from "../../../services/shoppinglist.service";
-import {useMutation, useQueryClient} from "react-query";
+import { SlideTransition as Transition } from "../transitions/Transitions";
+import { useForm } from "react-hook-form";
+import { createShoppingListForUser } from "../../../services/shoppinglist.service";
+import { useMutation, useQueryClient } from "react-query";
 
 interface AddShoppingListDialogProps {
   handleCloseDialog: () => void;
@@ -11,17 +17,17 @@ interface AddShoppingListDialogProps {
 }
 
 export default function AddShoppingListDialog({
-                                                handleCloseDialog,
-                                                dialogIsOpen,
-                                              }: AddShoppingListDialogProps) {
+  handleCloseDialog,
+  dialogIsOpen,
+}: AddShoppingListDialogProps) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (title: string) => createShoppingListForUser(title),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({queryKey: ["shoppingLists"]});
+      await queryClient.invalidateQueries({ queryKey: ["shoppingLists"] });
     },
   });
-  const {register, handleSubmit} = useForm();
+  const { register, handleSubmit, control } = useForm();
   return (
     <Dialog
       open={dialogIsOpen}

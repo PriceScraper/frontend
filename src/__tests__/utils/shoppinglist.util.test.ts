@@ -19,11 +19,11 @@ lines.push(
   )
 );
 test("get total should be positive", () => {
-  const total = getTotalByLines(lines);
+  const total = getTotalByLines(lines, ["aldi", "carrefour"]);
   expect(total).toBe("1.49");
 });
 
 test("get total should be zero", () => {
-  const total = getTotalByLines([]);
+  const total = getTotalByLines([], ["aldi", "carrefour"]);
   expect(total).toBe("0.00");
 });

@@ -1,21 +1,30 @@
 import "../../style/MainContainer.scss";
 import "../../style/ProductDetailsOverview.scss";
-import {fetchItem} from "../../services/item.service";
+import { fetchItem } from "../../services/item.service";
 import MainContainer from "../../components/layout/MainContainer";
-import {Link, useParams} from "react-router-dom";
-import {useMutation, useQuery} from "react-query";
+import { Link, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
 import PriceBar from "../../components/layout/PriceBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import {Avatar, Menu, MenuItem, Snackbar} from "@mui/material";
-import {addItemToShoppingList, fetchShoppingListForUser,} from "../../services/shoppinglist.service";
+import { Avatar, Menu, MenuItem, Snackbar } from "@mui/material";
+import {
+  addItemToShoppingList,
+  fetchShoppingListForUser,
+} from "../../services/shoppinglist.service";
 import Typography from "@mui/material/Typography";
-import {useState} from "react";
-import {SlideTransition} from "../../components/layout/dialogs/Transitions";
-import {getShopDominantColorByName, getShopLogoUrlByName,} from "../../utils/shop.util";
+import { useState } from "react";
+import { SlideTransition } from "../../components/layout/transitions/Transitions";
+import {
+  getShopDominantColorByName,
+  getShopLogoUrlByName,
+} from "../../utils/shop.util";
+import useSettings from "../../hooks/useSettings";
+import { getWhiteListedTrackedItemsForItem } from "../../utils/item.util";
 
 export default function ItemDetailsOverview() {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const { whiteListedShops } = useSettings();
 
   const handleSnackBarClose = (
     event: React.SyntheticEvent | Event,
@@ -81,19 +90,21 @@ export default function ItemDetailsOverview() {
             src={data?.image}
           />
           <div className={"product-details-comparison"}>
-            {data.trackedItems.map((trackedItem) => (
-              <PriceBar
-                key={trackedItem.url}
-                logoUrl={getShopLogoUrlByName(trackedItem.shop.name)!}
-                price={trackedItem.itemPrices[0].price}
-                percentageFilled={
-                  trackedItem.itemPrices[0].price / averagePrice + 1 > 100
-                    ? 100
-                    : trackedItem.itemPrices[0].price / averagePrice + 1
-                }
-                color={getShopDominantColorByName(trackedItem.shop.name)!}
-              />
-            ))}
+            {getWhiteListedTrackedItemsForItem(data, whiteListedShops).map(
+              (trackedItem) => (
+                <PriceBar
+                  key={trackedItem.url}
+                  logoUrl={getShopLogoUrlByName(trackedItem.shop.name)!}
+                  price={trackedItem.itemPrices[0].price}
+                  percentageFilled={
+                    trackedItem.itemPrices[0].price / averagePrice + 1 > 100
+                      ? 100
+                      : trackedItem.itemPrices[0].price / averagePrice + 1
+                  }
+                  color={getShopDominantColorByName(trackedItem.shop.name)!}
+                />
+              )
+            )}
           </div>
         </div>
         <div

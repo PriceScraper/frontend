@@ -4,6 +4,12 @@ import ShoppingListCard from "../../components/layout/shoppinglists/ShoppingList
 
 test("renders ShoppingListCard with shopping list", () => {
   const fakeShoppingList = testShoppingList;
-  render(<ShoppingListCard listNumber={1} shoppingList={fakeShoppingList} />);
+  render(
+    <ShoppingListCard
+      whiteListedShops={["aldi", "carrefour"]}
+      listNumber={1}
+      shoppingList={fakeShoppingList}
+    />
+  );
   expect(screen.getByText(fakeShoppingList.title)).toBeInTheDocument();
 });
