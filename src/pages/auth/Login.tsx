@@ -3,14 +3,17 @@ import {useEffect} from "react";
 import useAuth from "../../hooks/useAuth";
 
 export default function Login() {
-    const {token} = useParams<{token:string|undefined}>()
+    const {accessToken, refreshToken} = useParams<{
+        accessToken: string | undefined,
+        refreshToken: string | undefined
+    }>()
     const navigate = useNavigate()
-    const {isAuthenticated, setToken} = useAuth()
+    const {isAuthenticated, setTokens} = useAuth()
 
     useEffect(() => {
-        if(isAuthenticated) navigate("/")
-        else if(token !== undefined) {
-            setToken(token)
+        if (isAuthenticated) navigate("/")
+        else if (accessToken !== undefined && refreshToken !== undefined) {
+            setTokens(refreshToken, accessToken)
             navigate("/")
         }
     })
