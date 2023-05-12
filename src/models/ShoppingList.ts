@@ -1,13 +1,13 @@
-import { Item } from "./Item";
+import { ShoppingListLine } from "./ShoppingListLine";
 
 export class ShoppingList {
   id: number;
   title: string;
-  items: Item[];
+  lines: ShoppingListLine[];
 
-  constructor(id: number, title: string, items: Item[]) {
+  constructor(id: number, title: string, lines: ShoppingListLine[]) {
     this.id = id;
     this.title = title;
-    this.items = items;
+    this.lines = lines;
   }
 }

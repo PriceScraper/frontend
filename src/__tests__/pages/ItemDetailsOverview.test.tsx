@@ -3,11 +3,17 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { testItem } from "../../constants";
 import ItemDetailsOverview from "../../pages/items/ItemDetailsOverview";
 import * as ItemService from "../../services/item.service";
+import * as ShoppingListService from "../../services/shoppinglist.service";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 test("renders item details overview", async () => {
   const mock = jest.spyOn(ItemService, "fetchItem");
+  const mockShoppingLists = jest.spyOn(
+    ShoppingListService,
+    "fetchShoppingListForUser"
+  );
   mock.mockReturnValue(Promise.resolve(testItem));
+  mockShoppingLists.mockReturnValue(Promise.resolve([]));
   const fakeProduct = testItem;
   render(
     <QueryClientProvider client={new QueryClient()}>
