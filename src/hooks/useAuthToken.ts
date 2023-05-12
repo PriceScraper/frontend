@@ -1,24 +1,46 @@
 import {useState} from "react";
-import {eraseToken, getToken, storeToken} from "../functions/authTokenStorage";
+import {
+    eraseTokens,
+    getAccessToken,
+    getRefreshToken,
+    storeAccessToken,
+    storeRefreshToken
+} from "../functions/authTokenStorage";
 import initAxiosInterceptors from "../config/axios.config";
 
 export default function useAuthToken() {
-    const [token, setToken] = useState<string|null>(getToken())
+    const [accessToken, setAccessToken] = useState<string | null>(getAccessToken())
+    const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshToken())
 
-    function removeToken() {
-        eraseToken()
-        setToken(null)
+    function removeTokens() {
+        eraseTokens()
+        setAccessToken(null)
+        setRefreshToken(null)
     }
 
-    function handleChange(val:string|null) {
-        if(val === null) {
-            removeToken()
+    function handleAccessTokenChange(val: string | null) {
+        if (val === null) {
+            removeTokens()
             return;
         }
-        storeToken(val)
-        initAxiosInterceptors()
-        setToken(val)
+        storeAccessToken(val)
+        setAccessToken(val)
     }
 
-    return {token, setToken: handleChange}
+    function handleRefreshTokenChange(val: string | null) {
+        if (val === null) {
+            removeTokens()
+            return;
+        }
+        storeRefreshToken(val)
+        setRefreshToken(val)
+    }
+
+    function handleChange(refresh: string | null, access: string | null) {
+        handleAccessTokenChange(access)
+        handleRefreshTokenChange(refresh)
+        initAxiosInterceptors()
+    }
+
+    return {accessToken, refreshToken, setTokens: handleChange}
 }

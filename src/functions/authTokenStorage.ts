@@ -1,13 +1,23 @@
-const tokenKey = "WEB_TOKEN"
+const accessTokenKey = "WEB_TOKEN"
+const refreshTokenKey = "REFRESH_WEB_TOKEN"
 
-export function storeToken(val:string) {
-    localStorage.setItem(tokenKey, val)
+export function storeAccessToken(val: string) {
+    localStorage.setItem(accessTokenKey, val)
 }
 
-export function getToken() {
-    return localStorage.getItem(tokenKey) ?? null
+export function storeRefreshToken(val: string) {
+    localStorage.setItem(refreshTokenKey, val)
 }
 
-export function eraseToken() {
-    if(getToken() !== null) localStorage.removeItem(tokenKey)
+export function getAccessToken() {
+    return localStorage.getItem(accessTokenKey) ?? null
+}
+
+export function getRefreshToken() {
+    return localStorage.getItem(refreshTokenKey) ?? null
+}
+
+export function eraseTokens() {
+    if (getAccessToken() !== null) localStorage.removeItem(accessTokenKey)
+    if (getRefreshToken() !== null) localStorage.removeItem(refreshTokenKey)
 }

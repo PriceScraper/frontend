@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import LoginButton from "./LoginButton";
 
 export default function ProfileButton() {
-    const {user, setToken} = useAuth()
+    const {user, setTokens} = useAuth()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,7 +29,7 @@ export default function ProfileButton() {
         >
             <MenuItem onClick={() => {
                 setAnchorEl(null)
-                setToken(null)
+                setTokens(null, null)
                 window.location.href = `${process.env.REACT_APP_BACKEND_URL}/logout`
             }}>Logout</MenuItem>
         </Menu>

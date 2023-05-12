@@ -13,7 +13,7 @@ export default function MainRouter() {
         <Route path={"/shopping-lists"} element={<ShoppingListsOverview/>}/>
         <Route path={"/items/search"} element={<ItemSearch/>}/>
         <Route path={"/login"} element={<Login/>}/>
-        <Route path={"/auth/:token"} element={<Login/>}/>
+        <Route path={"/auth/:refreshToken/:accessToken"} element={<Login/>}/>
         <Route path={"*"} element={<Error404/>}/>
     </Routes>
 }
