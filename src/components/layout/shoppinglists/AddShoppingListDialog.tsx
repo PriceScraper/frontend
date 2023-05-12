@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { SlideTransition as Transition } from "../dialogs/Transitions";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { createShoppingListForUser } from "../../../services/shoppinglist.service";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -49,26 +49,19 @@ export default function AddShoppingListDialog({
         id="add-shopping-list-dialog-slide-description"
       >
         <form
+          onSubmit={() => handleSubmit((data) => mutation.mutate(data.title))}
           style={{
             display: "grid",
             marginTop: "1.5rem",
             paddingBottom: "0.5rem",
           }}
-          onSubmit={() => handleSubmit((data) => mutation.mutate(data.title))}
         >
-          <Controller
-            name={"title"}
-            control={control}
-            defaultValue={""}
-            render={({ field: { onChange, value } }) => (
-              <TextField
-                placeholder={"Mijn lijst"}
-                onChange={onChange}
-                value={value}
-                label={"Naam"}
-              />
-            )}
+          <TextField
+            {...register("title")}
+            placeholder={"Mijn lijst"}
+            label={"Naam"}
           />
+
           <Button
             sx={{ marginTop: "1rem", paddingY: "1rem" }}
             variant="contained"
