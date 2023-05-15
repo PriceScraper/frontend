@@ -23,7 +23,7 @@ const Auth = createContext<{
 export function AuthProvider(props:{children:React.ReactNode}) {
     const tokenHandler = useAuthToken()
     const {enqueueSnackbar} = useSnackbar()
-    useInterval(refreshTokens, 60 * 5) //60s * 5 = 5min
+    useInterval(refreshTokens, 60 * 2) //60s * 5 = 5min
 
     const isAuthenticated = useMemo(() => {
         return tokenHandler.accessToken !== null
@@ -36,6 +36,11 @@ export function AuthProvider(props:{children:React.ReactNode}) {
 
     function refreshTokens() {
         if (tokenHandler.refreshToken === null) return;
+        if (tokenHandler.accessToken === null) return;
+        if (jwt_decode<User>(tokenHandler.accessToken).exp * 1000 < new Date().getTime()) {
+            tokenHandler.setTokens(null, null)
+            return;
+        }
         axios
             .post<{
                 refreshToken: string,

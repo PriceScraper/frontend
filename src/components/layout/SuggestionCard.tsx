@@ -1,13 +1,7 @@
-import {
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import { ArrowForward } from "@mui/icons-material";
+import {Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography,} from "@mui/material";
+import {ArrowForward} from "@mui/icons-material";
+import useItems from "../../hooks/useItems";
+import {useNavigate} from "react-router-dom";
 
 interface SuggestionCardProps {
   img: string;
@@ -16,19 +10,27 @@ interface SuggestionCardProps {
 }
 
 export default function SuggestionCard({
-  img,
-  title,
+                                         img,
+                                         title,
   subtitle,
 }: SuggestionCardProps) {
+  const navigate = useNavigate()
+  const {setFilter} = useItems()
+
+  function handleClick() {
+    setFilter(title)
+    navigate("/items/search")
+  }
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea component={"a"}>
-        <CardMedia
-          component="img"
-          height="140"
-          image={img}
-          alt="search suggestion"
-          sx={{ objectFit: "contain", backgroundColor: "#bde0fe" }}
+      <Card sx={{maxWidth: 345}}>
+        <CardActionArea component={"a"}>
+          <CardMedia
+              component="img"
+              height="140"
+              image={img}
+              alt="search suggestion"
+              sx={{objectFit: "contain", backgroundColor: "#bde0fe"}}
         />
         <CardContent sx={{ paddingBottom: "0.3rem" }}>
           <Typography variant="h5" component="div">
@@ -41,8 +43,8 @@ export default function SuggestionCard({
           )}
         </CardContent>
         <CardActions>
-          <IconButton size="small">
-            <ArrowForward />
+          <IconButton size="small" onClick={handleClick}>
+            <ArrowForward/>
           </IconButton>
         </CardActions>
       </CardActionArea>
