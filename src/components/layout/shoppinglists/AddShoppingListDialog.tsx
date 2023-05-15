@@ -1,15 +1,9 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material";
+import {Button, Dialog, DialogContent, DialogTitle, TextField,} from "@mui/material";
 import React from "react";
-import { SlideTransition as Transition } from "../transitions/Transitions";
-import { useForm } from "react-hook-form";
-import { createShoppingListForUser } from "../../../services/shoppinglist.service";
-import { useMutation, useQueryClient } from "react-query";
+import {SlideTransition as Transition} from "../transitions/Transitions";
+import {useForm} from "react-hook-form";
+import {createShoppingListForUser} from "../../../services/shoppinglist.service";
+import {useMutation, useQueryClient} from "react-query";
 
 interface AddShoppingListDialogProps {
   handleCloseDialog: () => void;
@@ -24,19 +18,25 @@ export default function AddShoppingListDialog({
   const mutation = useMutation({
     mutationFn: (title: string) => createShoppingListForUser(title),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["shoppingLists"] });
+      await queryClient.invalidateQueries({queryKey: ["shoppingLists"]});
     },
   });
-  const { register, handleSubmit, control } = useForm();
+  const {register, getValues} = useForm();
+
+  function onSubmit() {
+    mutation.mutate(getValues("title"))
+    handleCloseDialog()
+  }
+
   return (
-    <Dialog
-      open={dialogIsOpen}
-      TransitionComponent={Transition}
-      keepMounted
-      onClose={handleCloseDialog}
-      aria-describedby="add-shopping-list-dialog-slide-description"
-      fullWidth
-      maxWidth="sm"
+      <Dialog
+          open={dialogIsOpen}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleCloseDialog}
+          aria-describedby="add-shopping-list-dialog-slide-description"
+          fullWidth
+          maxWidth="sm"
       sx={{ height: "70%" }}
     >
       <DialogTitle
@@ -49,7 +49,6 @@ export default function AddShoppingListDialog({
         id="add-shopping-list-dialog-slide-description"
       >
         <form
-          onSubmit={() => handleSubmit((data) => mutation.mutate(data.title))}
           style={{
             display: "grid",
             marginTop: "1.5rem",
@@ -63,12 +62,9 @@ export default function AddShoppingListDialog({
           />
 
           <Button
-            sx={{ marginTop: "1rem", paddingY: "1rem" }}
-            variant="contained"
-            type={"submit"}
-            onClick={() => {
-              handleCloseDialog();
-            }}
+              sx={{ marginTop: "1rem", paddingY: "1rem" }}
+              variant="contained"
+              onClick={onSubmit}
           >
             Toevoegen
           </Button>
