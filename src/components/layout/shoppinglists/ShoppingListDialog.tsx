@@ -1,12 +1,12 @@
-import { Box, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import {Box, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import React from "react";
-import { SlideTransition as Transition } from "../dialogs/Transitions";
-import { ShoppingListLine } from "../../../models/ShoppingListLine";
+import {SlideTransition as Transition} from "../dialogs/Transitions";
+import {ShoppingListLine} from "../../../models/ShoppingListLine";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { useMutation, useQueryClient } from "react-query";
+import {useMutation, useQueryClient} from "react-query";
 import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
 import {
   addItemToShoppingList,
@@ -15,10 +15,10 @@ import {
 } from "../../../services/shoppinglist.service";
 import EmptyHint from "../EmptyHint";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
-import { findTrackedItemWithLowestPrice } from "../../../utils/item.util";
-import { getShopLogoUrlByName } from "../../../utils/shop.util";
-import { getTotalByLines } from "../../../utils/shoppinglist.util";
+import {Link} from "react-router-dom";
+import {findTrackedItemWithLowestPrice} from "../../../utils/item.util";
+import {getShopLogoUrlByName} from "../../../utils/shop.util";
+import {getTotalByLines} from "../../../utils/shoppinglist.util";
 
 interface ShoppingListDialogProps {
   id: number;
@@ -68,8 +68,6 @@ export default function ShoppingListDialog({
     },
   });
 
-  const [shoppingListDialogIsOpen, setIsShoppingListDialogOpen] =
-    React.useState(false);
   return (
     <Dialog
       open={dialogIsOpen}

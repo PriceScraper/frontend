@@ -1,24 +1,18 @@
 import "../../style/MainContainer.scss";
 import "../../style/ProductDetailsOverview.scss";
-import { fetchItem } from "../../services/item.service";
+import {fetchItem} from "../../services/item.service";
 import MainContainer from "../../components/layout/MainContainer";
-import { Link, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import {Link, useParams} from "react-router-dom";
+import {useMutation, useQuery} from "react-query";
 import PriceBar from "../../components/layout/PriceBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import { Avatar, Menu, MenuItem, Snackbar } from "@mui/material";
-import {
-  addItemToShoppingList,
-  fetchShoppingListForUser,
-} from "../../services/shoppinglist.service";
+import {Avatar, Menu, MenuItem, Snackbar} from "@mui/material";
+import {addItemToShoppingList, fetchShoppingListForUser,} from "../../services/shoppinglist.service";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { SlideTransition } from "../../components/layout/dialogs/Transitions";
-import {
-  getShopDominantColorByName,
-  getShopLogoUrlByName,
-} from "../../utils/shop.util";
+import {useState} from "react";
+import {SlideTransition} from "../../components/layout/dialogs/Transitions";
+import {getShopDominantColorByName, getShopLogoUrlByName,} from "../../utils/shop.util";
 
 export default function ItemDetailsOverview() {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -73,7 +67,7 @@ export default function ItemDetailsOverview() {
   if (isError || isShoppingListsError || !data) return <div>Error...</div>;
 
   const averagePrice =
-    data.trackedItems.length != 0
+    data.trackedItems.length !== 0
       ? data.trackedItems.reduce((p, c) => p + c.itemPrices[0].price, 0) /
         data.trackedItems.length
       : 0;
