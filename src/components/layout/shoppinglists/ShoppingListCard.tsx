@@ -1,16 +1,23 @@
 import { Box, Card, CardActionArea, Typography } from "@mui/material";
 import { ShoppingList } from "../../../models/ShoppingList";
 import { getTotalByLines } from "../../../utils/shoppinglist.util";
+import { useMemo } from "react";
 
 interface ShoppingListCardProps {
   listNumber: number;
   shoppingList: ShoppingList;
+  whiteListedShops: string[];
 }
 
 export default function ShoppingListCard({
   listNumber,
   shoppingList,
+  whiteListedShops,
 }: ShoppingListCardProps) {
+  const total = useMemo(
+    () => getTotalByLines(shoppingList.lines, whiteListedShops),
+    [shoppingList.lines, whiteListedShops]
+  );
   return (
     <Card sx={{ display: "flex", border: "1px solid black" }}>
       <CardActionArea>
@@ -68,7 +75,7 @@ export default function ShoppingListCard({
               component="div"
               variant="h6"
             >
-              €{getTotalByLines(shoppingList.lines)}
+              €{total}
             </Typography>
           </Box>
           <Box

@@ -1,13 +1,10 @@
 import IconButton from "@mui/material/IconButton";
 import LoginIcon from "@mui/icons-material/Login";
+import { redirectToLogin } from "../../../utils/auth.util";
 
 export default function LoginButton() {
-  const redirect = () => {
-    window.location.href = `${process.env.REACT_APP_BACKEND_URL}`;
-  };
-
   return (
-    <IconButton onClick={redirect}>
+    <IconButton onClick={redirectToLogin}>
       <LoginIcon sx={{ color: "white" }} />
     </IconButton>
   );

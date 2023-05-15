@@ -7,6 +7,9 @@ import ShoppingListsOverview from "../../pages/shop/ShoppingListsOverview";
 
 test("renders shopping lists overview", async () => {
   const mock = jest.spyOn(ShoppingListService, "fetchShoppingListForUser");
+  jest.mock("../../hooks/useSettings", () => ({
+    useSettings: () => ({ whiteListedShops: ["aldi", "carrefour"] }),
+  }));
   mock.mockReturnValue(Promise.resolve([testShoppingList]));
   const fakeShoppingList = testShoppingList;
   render(

@@ -2,6 +2,8 @@ import { findTrackedItemWithLowestPrice } from "../../utils/item.util";
 import { TrackedItem } from "../../models/TrackedItem";
 import { Shop } from "../../models/Shop";
 import { ItemPrice } from "../../models/ItemPrice";
+import { Item } from "../../models/Item";
+import { ItemUnit } from "../../models/ItemUnit";
 
 test("findTrackedItemWithLowestPrice returns lowest price", () => {
   const trackedItems = [
@@ -30,4 +32,12 @@ test("findTrackedItemWithLowestPrice with empty prices should throw", () => {
 test("findTrackedItemWithLowestPrice with empty tracked items should throw", () => {
   const trackedItems: TrackedItem[] = [];
   expect(() => findTrackedItemWithLowestPrice(trackedItems)).toThrow();
+});
+
+test("get whitelisted tracked items should return tracked item", () => {
+  const item = new Item(1, "", "", "", 1, new ItemUnit(1, 1), "", [
+    new TrackedItem("", new Shop(1, "aldi.be", ""), null, [
+      new ItemPrice(1, null, "", 1.75),
+    ]),
+  ]);
 });

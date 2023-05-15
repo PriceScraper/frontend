@@ -19,3 +19,7 @@ export function getShopDominantColorByName(name: string) {
     "ah.be": "#00A0E2",
   }[name.toLowerCase()];
 }
+
+export function getShopNameFromDomain(domain: string) {
+  return domain.split(".")[0];
+}

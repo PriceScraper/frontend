@@ -5,9 +5,18 @@ body {
   font-family: 'Source Sans Pro', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  p, h1, h2, span {
+    font-family: 'Source Sans Pro', sans-serif !important;
+  }
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+img {
+  -webkit-user-drag: none;
+  -moz-user-select: none;
 }

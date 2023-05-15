@@ -10,15 +10,19 @@ import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Typography from "@mui/material/Typography";
 import AddShoppingListDialog from "../../components/layout/shoppinglists/AddShoppingListDialog";
 import EmptyHint from "../../components/layout/EmptyHint";
+import useSettings from "../../hooks/useSettings";
 
 interface ShoppingListsDialogsOpen {
   [key: number]: boolean;
 }
+
 export default function ShoppingListsOverview() {
   const [shoppingListDialogIsOpen, setIsShoppingListDialogOpen] =
     React.useState<ShoppingListsDialogsOpen>({});
   const [addShoppingListDialogIsOpen, setIsAddShoppingListDialogOpen] =
     React.useState(false);
+
+  const { whiteListedShops } = useSettings();
 
   const { isLoading, isError, data } = useQuery(["shoppingLists"], () =>
     fetchShoppingListForUser()
@@ -48,6 +52,7 @@ export default function ShoppingListsOverview() {
               <ShoppingListCard
                 listNumber={index + 1}
                 shoppingList={shoppingList}
+                whiteListedShops={whiteListedShops}
               />
             </div>
             <ShoppingListDialog
@@ -60,6 +65,7 @@ export default function ShoppingListsOverview() {
                   [shoppingList.id]: false,
                 }))
               }
+              whiteListedShops={whiteListedShops}
               dialogIsOpen={
                 shoppingListDialogIsOpen[shoppingList.id] !== undefined
                   ? shoppingListDialogIsOpen[shoppingList.id]

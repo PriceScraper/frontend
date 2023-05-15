@@ -1,12 +1,12 @@
-import {Box, Dialog, DialogContent, DialogTitle} from "@mui/material";
-import React from "react";
-import {SlideTransition as Transition} from "../dialogs/Transitions";
-import {ShoppingListLine} from "../../../models/ShoppingListLine";
+import { Box, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import React, { useMemo } from "react";
+import { SlideTransition as Transition } from "../transitions/Transitions";
+import { ShoppingListLine } from "../../../models/ShoppingListLine";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import {useMutation, useQueryClient} from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
 import {
   addItemToShoppingList,
@@ -15,10 +15,13 @@ import {
 } from "../../../services/shoppinglist.service";
 import EmptyHint from "../EmptyHint";
 import Typography from "@mui/material/Typography";
-import {Link} from "react-router-dom";
-import {findTrackedItemWithLowestPrice} from "../../../utils/item.util";
-import {getShopLogoUrlByName} from "../../../utils/shop.util";
-import {getTotalByLines} from "../../../utils/shoppinglist.util";
+import { Link } from "react-router-dom";
+import {
+  findTrackedItemWithLowestPrice,
+  getWhiteListedTrackedItemsForItem,
+} from "../../../utils/item.util";
+import { getShopLogoUrlByName } from "../../../utils/shop.util";
+import { getTotalByLines } from "../../../utils/shoppinglist.util";
 
 interface ShoppingListDialogProps {
   id: number;
@@ -26,6 +29,7 @@ interface ShoppingListDialogProps {
   lines: ShoppingListLine[];
   handleCloseDialog: () => void;
   dialogIsOpen: boolean;
+  whiteListedShops: string[];
 }
 
 interface ShoppingListItemAction {
@@ -40,8 +44,14 @@ export default function ShoppingListDialog({
   lines,
   handleCloseDialog,
   dialogIsOpen,
+  whiteListedShops,
 }: ShoppingListDialogProps) {
   const queryClient = useQueryClient();
+  const total = useMemo(
+    () => getTotalByLines(lines, whiteListedShops),
+    [lines, whiteListedShops]
+  );
+
   const mutation = useMutation({
     mutationFn: (id: number) => deleteShoppingListForUser(id),
     onSuccess: async () => {
@@ -160,20 +170,36 @@ export default function ShoppingListDialog({
                   }}
                 >
                   {line.item.trackedItems !== null &&
-                    line.item.trackedItems.length > 0 &&
-                    "€" +
-                      (
-                        findTrackedItemWithLowestPrice(line.item.trackedItems)
-                          .itemPrices[0].price * line.quantity
+                  getWhiteListedTrackedItemsForItem(line.item, whiteListedShops)
+                    .length > 0 ? (
+                    <>
+                      €
+                      {(
+                        findTrackedItemWithLowestPrice(
+                          getWhiteListedTrackedItemsForItem(
+                            line.item,
+                            whiteListedShops
+                          )
+                        ).itemPrices[0].price * line.quantity
                       ).toFixed(2)}
-                  <img
-                    src={getShopLogoUrlByName(
-                      findTrackedItemWithLowestPrice(line.item.trackedItems)
-                        .shop.name
-                    )}
-                    alt={"shop logo"}
-                    style={{ height: "2rem", width: "2rem" }}
-                  />
+                      <img
+                        src={getShopLogoUrlByName(
+                          findTrackedItemWithLowestPrice(
+                            getWhiteListedTrackedItemsForItem(
+                              line.item,
+                              whiteListedShops
+                            )
+                          ).shop.name
+                        )}
+                        alt={"shop logo"}
+                        style={{ height: "2rem", width: "2rem" }}
+                      />
+                    </>
+                  ) : (
+                    <span style={{ gridColumn: "span 2" }}>
+                      Geen prijs gevonden
+                    </span>
+                  )}
                 </div>
               </li>
             ))}
@@ -188,7 +214,7 @@ export default function ShoppingListDialog({
               fontWeight: "600",
             }}
           >
-            €{getTotalByLines(lines)}
+            €{total}
           </Typography>
         </div>
       </DialogContent>
