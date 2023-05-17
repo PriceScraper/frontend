@@ -3,7 +3,6 @@ import useAuthToken from "./useAuthToken";
 import jwt_decode from "jwt-decode";
 import User from "../entities/User";
 import axios from "axios";
-import {useSnackbar} from "notistack";
 import useInterval from "./useInterval";
 
 const Auth = createContext<{
@@ -22,7 +21,6 @@ const Auth = createContext<{
 })
 export function AuthProvider(props:{children:React.ReactNode}) {
     const tokenHandler = useAuthToken()
-    const {enqueueSnackbar} = useSnackbar()
     useInterval(refreshTokens, 60 * 2) //60s * 5 = 5min
 
     const isAuthenticated = useMemo(() => {
@@ -47,7 +45,7 @@ export function AuthProvider(props:{children:React.ReactNode}) {
                 accessToken: string
             }>("/auth/refresh", {refreshToken: tokenHandler.refreshToken})
             .then(res => tokenHandler.setTokens(res.data.refreshToken, res.data.accessToken))
-            .catch(err => enqueueSnackbar(err.message, {variant: "error"}))
+            .catch(err => console.log(err.message))
     }
 
     return <Auth.Provider value={{
