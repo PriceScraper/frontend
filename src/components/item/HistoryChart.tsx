@@ -1,8 +1,8 @@
 import {TrackedItem} from "../../models/TrackedItem";
-import {ItemPrice} from "../../models/ItemPrice";
 import {VictoryChart, VictoryLegend, VictoryLine, VictoryTheme} from "victory";
 import {getShopDominantColorByName} from "../../utils/shop.util";
 import {Typography} from "@mui/material";
+import {onePricePerDay, orderedPrices} from "../../utils/item.util";
 
 export default function HistoryChart(props: { trackedItems: TrackedItem[] }) {
     if (props.trackedItems.filter(ti => ti.itemPrices.length > 1).length === 0) return <></>
@@ -19,14 +19,14 @@ export default function HistoryChart(props: { trackedItems: TrackedItem[] }) {
                            orientation="horizontal"
                            gutter={20}
                            style={{border: {stroke: "black"}, title: {fontSize: 20}}}
-                           data={props.trackedItems.map(ti => {
+                           data={props.trackedItems.filter(e => e.itemPrices.length > 1).map(ti => {
                                return {
                                    name: ti.shop.name,
                                    symbol: {fill: getShopDominantColorByName(ti.shop.name)}
                                }
                            })}
             />
-            {props.trackedItems.map(trackedItem =>
+            {props.trackedItems.filter(e => e.itemPrices.length > 1).map(trackedItem =>
                 <VictoryLine
                     key={trackedItem.url}
                     style={{
@@ -38,7 +38,7 @@ export default function HistoryChart(props: { trackedItems: TrackedItem[] }) {
                             strokeLinecap: "round"
                         },
                     }}
-                    data={orderedPrices(trackedItem.itemPrices).map(e => {
+                    data={orderedPrices(onePricePerDay(trackedItem.itemPrices)).map(e => {
                         return {x: e.timestamp.substring(0, 10), y: e.price}
                     })}
                     interpolation={"basis"}
@@ -46,13 +46,4 @@ export default function HistoryChart(props: { trackedItems: TrackedItem[] }) {
             }
         </VictoryChart>
     </>
-}
-
-function orderedPrices(prices: ItemPrice[]) {
-    return prices
-        .sort((a, b) => {
-            if (new Date(a.timestamp).getTime() > new Date(b.timestamp).getTime()) return 1
-            if (new Date(a.timestamp).getTime() < new Date(b.timestamp).getTime()) return -1
-            return 0
-        })
 }
