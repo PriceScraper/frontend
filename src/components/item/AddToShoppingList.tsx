@@ -8,8 +8,11 @@ import {Item} from "../../models/Item";
 import {useState} from "react";
 import {SlideTransition} from "../layout/transitions/Transitions";
 import {Link} from "react-router-dom";
+import LoopIcon from '@mui/icons-material/Loop';
+import AddRecurringItemModal from "./AddRecurringItemModal";
 
 export default function AddToShoppingList(props: { item: Item | undefined }) {
+    const [recurringItemModalOpen, setRecurringItemModalOpen] = useState(false)
     const [snackBarOpen, setSnackBarOpen] = useState(false);
     const {
         isLoading: isShoppingListsLoading,
@@ -51,6 +54,8 @@ export default function AddToShoppingList(props: { item: Item | undefined }) {
     if (isShoppingListsError) return <></>;
 
     return <>
+        <AddRecurringItemModal open={recurringItemModalOpen} handleClose={() => setRecurringItemModalOpen(false)}
+                               item={props.item}/>
         <IconButton
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
@@ -75,6 +80,20 @@ export default function AddToShoppingList(props: { item: Item | undefined }) {
                 },
             }}
         >
+            <MenuItem
+                onClick={() => setRecurringItemModalOpen(true)}
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 2fr",
+                    alignItems: "center",
+                }}
+            >
+                <Avatar sx={{justifySelf: "center"}}>
+                    <LoopIcon/>
+                </Avatar>
+
+                <Typography>Periodiek nodig</Typography>
+            </MenuItem>
             {shoppingLists!.map((shoppingList) => (
                 <MenuItem
                     key={shoppingList.id}
