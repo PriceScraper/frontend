@@ -11,6 +11,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import List from "@mui/material/List";
 import LoginIcon from '@mui/icons-material/Login';
 import useAuth from "../../../hooks/useAuth";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 export default function LeftNav({open, toggleDrawer, setOpen}: {
     open: boolean,
@@ -47,6 +48,7 @@ export default function LeftNav({open, toggleDrawer, setOpen}: {
         <Divider/>
         <List component="nav">
             <LeftNavItem path="/" text="Home" icon={<HomeIcon/>}/>
+            <LeftNavItem path="/Recipes" text="Recipes" icon={<MenuBookIcon/>}/>
             {!isAuthenticated && <>
                 <Divider sx={{my: 1}}/>
                 <LeftNavItemExternalUrl url={`${process.env.REACT_APP_BACKEND_URL}`} text="Login" icon={<LoginIcon/>}/>

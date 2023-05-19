@@ -1,6 +1,6 @@
-import { TrackedItem } from "../models/TrackedItem";
-import { Item } from "../models/Item";
-import { getShopNameFromDomain } from "./shop.util";
+import {TrackedItem} from "../models/TrackedItem";
+import {Item} from "../models/Item";
+import {getShopNameFromDomain} from "./shop.util";
 
 export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
   if (trackedItems.length === 0)
