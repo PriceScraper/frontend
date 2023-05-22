@@ -7,7 +7,7 @@ import {useQuery} from "react-query";
 import PriceBar from "../../components/layout/PriceBar";
 import {getShopDominantColorByName, getShopLogoUrlByName,} from "../../utils/shop.util";
 import useSettings from "../../hooks/useSettings";
-import {getWhiteListedTrackedItemsForItem} from "../../utils/item.util";
+import {getWhiteListedTrackedItemsForItem, orderedPrices} from "../../utils/item.util";
 import {getLatestPriceFromTrackedItems} from "../../models/Item";
 import HistoryChart from "../../components/item/HistoryChart";
 import Divider from "@mui/material/Divider";
@@ -29,6 +29,9 @@ export default function ItemDetailsOverview() {
 
     if (isLoading) return <div>Loading...</div>;
     if (isError || !data) return <div>Error...</div>;
+
+    console.log(whiteListedShops)
+    console.log(getWhiteListedTrackedItemsForItem(data, whiteListedShops))
 
     const averagePrice =
         getLatestPriceFromTrackedItems(data).trackedItems.length !== 0
@@ -56,17 +59,18 @@ export default function ItemDetailsOverview() {
                         width={250}
                     />
                     <div className={"product-details-comparison"}>
-                        {getWhiteListedTrackedItemsForItem(data, whiteListedShops).map(
-                            (trackedItem) => (
-                                <PriceBar
-                                    key={trackedItem.url}
-                                    logoUrl={getShopLogoUrlByName(trackedItem.shop.name)!}
-                                    price={trackedItem.itemPrices[0].price}
-                                    percentageFilled={
-                                        trackedItem.itemPrices[0].price / averagePrice + 1 > 100
-                                            ? 100
-                                            : trackedItem.itemPrices[0].price / averagePrice + 1
-                                    }
+                        {getWhiteListedTrackedItemsForItem(data, whiteListedShops)
+                            .map(
+                                (trackedItem) => (
+                                    <PriceBar
+                                        key={trackedItem.url}
+                                        logoUrl={getShopLogoUrlByName(trackedItem.shop.name)!}
+                                        price={orderedPrices(trackedItem.itemPrices).reverse()[0].price}
+                                        percentageFilled={
+                                            orderedPrices(trackedItem.itemPrices).reverse()[0].price / averagePrice + 1 > 100
+                                                ? 100
+                                                : orderedPrices(trackedItem.itemPrices).reverse()[0].price / averagePrice + 1
+                                        }
                                     color={getShopDominantColorByName(trackedItem.shop.name)!}
                                 />
                             )

@@ -1,6 +1,7 @@
 import {TrackedItem} from "../models/TrackedItem";
 import {Item} from "../models/Item";
 import {getShopNameFromDomain} from "./shop.util";
+import {ItemPrice} from "../models/ItemPrice";
 
 export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
   if (trackedItems.length === 0)
@@ -21,4 +22,25 @@ export function getWhiteListedTrackedItemsForItem(
   return item.trackedItems.filter((trackedItem) =>
     whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
   );
+}
+
+export function orderedPrices(prices: ItemPrice[]) {
+    return prices
+        .sort(sortPriceByDateAsc)
+}
+
+export function sortPriceByDateAsc(a: ItemPrice, b: ItemPrice): number {
+    if (new Date(a.timestamp).getTime() > new Date(b.timestamp).getTime()) return 1
+    if (new Date(a.timestamp).getTime() < new Date(b.timestamp).getTime()) return -1
+    return 0
+}
+
+export function onePricePerDay(list: ItemPrice[]) {
+    let prices: ItemPrice[] = []
+    list.forEach(price => {
+        if (prices.filter(e => e.timestamp.substring(0, 10) === price.timestamp.substring(0, 10)).length === 0) {
+            prices.push(price)
+        }
+    })
+    return prices
 }
