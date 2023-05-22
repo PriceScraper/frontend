@@ -5,12 +5,12 @@ import {useEffect, useState} from "react";
 import Recipe from "../../models/Recipe";
 import axios from "axios";
 import {useSnackbar} from "notistack";
-import RecipeItemCard from "../../components/recipe/view/RecipeItemCard";
 import MainContainer from "../../components/layout/MainContainer";
 import {Button} from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import NewShoppingListFromRecipe from "../../components/recipe/view/NewShoppingListFromRecipe";
 import AddRecipeToShoppingList from "../../components/recipe/view/AddRecipeToShoppingList";
+import RecipeItemCard from "../../components/recipe/modify/RecipeItemCard";
 
 export default function ViewRecipe() {
     const {recipeId} = useParams<{ recipeId: string | undefined }>()
@@ -43,6 +43,7 @@ export default function ViewRecipe() {
                     <Button color={"warning"} onClick={() => navigate(`/recipes/${recipeId}/modify`)}>Bewerk</Button>}
             </div>
         </div>
-        {recipe.items.map(e => <RecipeItemCard key={e.id} recipeItem={e}/>)}
+        {recipe.items.map(e => <RecipeItemCard key={e.id} recipeItem={e} setRecipe={() => {
+        }} recipe={null}/>)}
     </MainContainer>
 }

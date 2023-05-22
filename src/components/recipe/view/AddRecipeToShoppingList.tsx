@@ -31,22 +31,18 @@ export default function AddRecipeToShoppingList(props: { recipe: Recipe }) {
         setAnchorEl(event.currentTarget);
     };
 
-    async function handleSubmit(id: number) {
+    function handleSubmit(id: number) {
         if (props.recipe.items === null) return;
         for (let i = 0; i < props.recipe.items.length; i++) {
-            try {
-                await axios.post("/shoppinglists/items/add", {
-                    shoppingListId: id,
-                    itemId: props.recipe.items[i].id,
-                    quantity: props.recipe.items[i].quantity
+            axios.post("/shoppinglists/items/add", {
+                shoppingListId: id,
+                itemId: props.recipe.items[i].id,
+                quantity: props.recipe.items[i].quantity
+            })
+                .then(() => {
                 })
-            } catch (err: any) {
-                enqueueSnackbar(`${err}`, {variant: "error"})
-            }
+                .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
         }
-    }
-
-    function redirectAfterSubmit() {
         navigate("/shopping-lists")
     }
 
@@ -75,7 +71,7 @@ export default function AddRecipeToShoppingList(props: { recipe: Recipe }) {
                         gridTemplateColumns: "1fr 2fr",
                         alignItems: "center",
                     }}
-                    onClick={() => handleSubmit(shoppingList.id).then(redirectAfterSubmit)}
+                    onClick={() => handleSubmit(shoppingList.id)}
                 >
                     <Avatar sx={{justifySelf: "center"}} key={shoppingList.id}>
                         {shoppingList.title.substring(0, 1).toUpperCase()}

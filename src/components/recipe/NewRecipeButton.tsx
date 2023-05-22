@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import green from "@mui/material/colors/green";
 import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -39,7 +38,7 @@ export default function NewRecipeButton() {
                 </CardContent>
             </Box>
             <CardMedia sx={{my: "auto", mx: 2}}>
-                <Avatar sx={{w: 56, h: 56, bgcolor: green[500]}}>
+                <Avatar sx={{w: 56, h: 56, bgcolor: "green"}}>
                     <AddIcon/>
                 </Avatar>
             </CardMedia>
@@ -54,16 +53,16 @@ function NewRecipeModal({open, handleClose}: { open: boolean, handleClose: () =>
     const {enqueueSnackbar} = useSnackbar()
     const {refreshPersonal} = useRecipes()
 
-    async function onSubmit() {
-        try {
-            const res = await axios.post<Recipe>("/recipe", {title: getValues("title")})
-            enqueueSnackbar(`Recept aangemaakt voor ${res.data.title}`, {variant: "success"})
-            navigate(`/recipes/${res.data.id}/modify`)
-            handleClose()
-            refreshPersonal()
-        } catch (err: any) {
-            enqueueSnackbar(`${err.message}`, {variant: "error"})
-        }
+    function onSubmit() {
+        axios
+            .post<Recipe>("/recipe", {title: getValues("title")})
+            .then(res => {
+                enqueueSnackbar(`Recept aangemaakt voor ${res.data.title}`, {variant: "success"})
+                navigate(`/recipes/${res.data.id}/modify`)
+                handleClose()
+                refreshPersonal()
+            })
+            .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
     }
 
     return <Dialog open={open}>

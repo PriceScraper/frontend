@@ -24,13 +24,14 @@ function FormDialog(props: { open: boolean, handleClose: () => void, recipe: Rec
     const navigate = useNavigate()
     const {enqueueSnackbar} = useSnackbar()
 
-    async function handleSubmit() {
+    function handleSubmit() {
         if (getValues("title").length < 3) {
             enqueueSnackbar("De naam van de boodschappenlijst moet minstens 3 karakters lang zijn.", {variant: "info"})
             return;
         }
-        await axios.post("/shoppinglists/recipe", {title: getValues("title"), recipe: props.recipe})
-        navigate("/shopping-lists")
+        axios.post("/shoppinglists/recipe", {title: getValues("title"), recipe: props.recipe})
+            .then(() => navigate("/shopping-lists"))
+            .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
     }
 
     return <Dialog open={props.open} onClose={props.handleClose}>

@@ -7,20 +7,22 @@ import {useSnackbar} from "notistack";
 
 export default function RecipeItemCard({recipeItem, recipe, setRecipe}: {
     recipeItem: RecipeItem,
-    recipe: Recipe,
+    recipe: Recipe | null,
     setRecipe: (e: Recipe) => void
 }) {
     const {enqueueSnackbar} = useSnackbar()
 
-    if (recipe.items === null) return <></>
+    if (recipe !== null && recipe.items === null) return <></>
 
     function handleAddItem() {
+        if (recipe === null) return;
         axios.post<Recipe>("/recipe/item/add", {recipeId: recipe.id, itemId: recipeItem.item.id})
             .then(res => setRecipe(res.data))
             .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
     }
 
     function handleRemoveItem() {
+        if (recipe === null) return;
         axios.post<Recipe>("/recipe/item/remove", {recipeId: recipe.id, itemId: recipeItem.item.id})
             .then(res => setRecipe(res.data))
             .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
@@ -39,7 +41,7 @@ export default function RecipeItemCard({recipeItem, recipe, setRecipe}: {
                     <Typography component="div" variant="h6" sx={{my: "auto"}}>
                         {recipeItem.item.name}
                     </Typography>
-                    <Box sx={{display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
+                    {recipe !== null && <Box sx={{display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
                         <IconButton aria-label="reduct" onClick={handleRemoveItem}>
                             <RemoveIcon/>
                         </IconButton>
@@ -49,7 +51,7 @@ export default function RecipeItemCard({recipeItem, recipe, setRecipe}: {
                         <IconButton aria-label="add" onClick={handleAddItem}>
                             <AddIcon/>
                         </IconButton>
-                    </Box>
+                    </Box>}
                 </Box>
             </CardContent>
         </Box>

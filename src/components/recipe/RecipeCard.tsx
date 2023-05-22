@@ -5,7 +5,6 @@ import Recipe from "../../models/Recipe";
 import {Avatar, Box, CardMedia} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import green from "@mui/material/colors/green";
 
 export default function RecipeCard({recipe}: { recipe: Recipe }) {
     const navigate = useNavigate()
@@ -23,7 +22,7 @@ export default function RecipeCard({recipe}: { recipe: Recipe }) {
             </CardContent>
         </Box>
         <CardMedia sx={{my: "auto", mx: 2}}>
-            <Avatar sx={{w: 56, h: 56, bgcolor: green[500]}}>
+            <Avatar sx={{w: 56, h: 56, bgcolor: "green"}}>
                 <MenuBookIcon/>
             </Avatar>
         </CardMedia>

@@ -5,5 +5,5 @@ export function isRecipeFromCreator(recipe: Recipe, creatorId: number) {
 }
 
 export function isInvalidRecipeId(recipeIdAsString: string | undefined) {
-    return recipeIdAsString === undefined || Number.isNaN(recipeIdAsString)
+    return recipeIdAsString === undefined || Number.isNaN(Number.parseInt(recipeIdAsString))
 }
