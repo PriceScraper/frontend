@@ -30,9 +30,6 @@ export default function ItemDetailsOverview() {
     if (isLoading) return <div>Loading...</div>;
     if (isError || !data) return <div>Error...</div>;
 
-    console.log(whiteListedShops)
-    console.log(getWhiteListedTrackedItemsForItem(data, whiteListedShops))
-
     const averagePrice =
         getLatestPriceFromTrackedItems(data).trackedItems.length !== 0
             ? data.trackedItems.reduce((p, c) => p + c.itemPrices[0].price, 0) /
@@ -71,10 +68,10 @@ export default function ItemDetailsOverview() {
                                                 ? 100
                                                 : orderedPrices(trackedItem.itemPrices).reverse()[0].price / averagePrice + 1
                                         }
-                                    color={getShopDominantColorByName(trackedItem.shop.name)!}
-                                />
-                            )
-                        )}
+                                        color={getShopDominantColorByName(trackedItem.shop.name)!}
+                                    />
+                                )
+                            )}
                     </div>
                 </div>
                 <Divider sx={{visibility: "hidden", my: 10}}/>

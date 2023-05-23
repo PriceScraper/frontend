@@ -16,11 +16,11 @@ export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
 }
 
 export function getWhiteListedTrackedItemsForItem(
-    item: Item,
-    whiteListedShops: string[]
+  item: Item,
+  whiteListedShops: string[]
 ) {
   return item.trackedItems.filter((trackedItem) =>
-      whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
+    whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
   );
 }
 
