@@ -12,6 +12,7 @@ import List from "@mui/material/List";
 import LoginIcon from '@mui/icons-material/Login';
 import useAuth from "../../../hooks/useAuth";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 
 export default function LeftNav({open, toggleDrawer, setOpen}: {
     open: boolean,
@@ -47,8 +48,9 @@ export default function LeftNav({open, toggleDrawer, setOpen}: {
         </Toolbar>
         <Divider/>
         <List component="nav">
-            <LeftNavItem path="/" text="Home" icon={<HomeIcon/>}/>
-            <LeftNavItem path="/Recipes" text="Recipes" icon={<MenuBookIcon/>}/>
+            <LeftNavItem path="/" text="Start" icon={<HomeIcon/>}/>
+            <LeftNavItem path="/Shopping-Lists" text="Boodschappenlijst" icon={<LocalGroceryStoreIcon/>}/>
+            <LeftNavItem path="/Recipes" text="Recepten" icon={<MenuBookIcon/>}/>
             {!isAuthenticated && <>
                 <Divider sx={{my: 1}}/>
                 <LeftNavItemExternalUrl url={`${process.env.REACT_APP_BACKEND_URL}`} text="Login" icon={<LoginIcon/>}/>
