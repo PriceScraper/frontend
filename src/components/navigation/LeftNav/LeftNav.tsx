@@ -12,6 +12,7 @@ import List from "@mui/material/List";
 import LoginIcon from '@mui/icons-material/Login';
 import useAuth from "../../../hooks/useAuth";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import CropFreeIcon from '@mui/icons-material/CropFree';
 
 export default function LeftNav({open, toggleDrawer, setOpen}: {
     open: boolean,
@@ -48,6 +49,7 @@ export default function LeftNav({open, toggleDrawer, setOpen}: {
         <Divider/>
         <List component="nav">
             <LeftNavItem path="/" text="Home" icon={<HomeIcon/>}/>
+            <LeftNavItem path="/product/Scan" text="Scan product" icon={<CropFreeIcon/>}/>
             <LeftNavItem path="/Recipes" text="Recipes" icon={<MenuBookIcon/>}/>
             {!isAuthenticated && <>
                 <Divider sx={{my: 1}}/>
