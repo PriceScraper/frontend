@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
 
 body {
+  width: 100%;
+  height: 100vh;
   margin: 0;
   font-family: 'Source Sans Pro', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  p, h1, h2, span {
+  p, h1, h2, span, div {
     font-family: 'Source Sans Pro', sans-serif !important;
   }
 }
