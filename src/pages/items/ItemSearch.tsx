@@ -1,10 +1,13 @@
 import SearchBar from "../../components/search/SearchBar";
 import {ItemSearchDto} from "../../models/dtos/ItemSearchDto";
-import {Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
+import {Card, CardActionArea, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
 import React from "react";
 import useItems from "../../hooks/useItems";
 import './../../style/flexElements.scss'
 import noResultsImg from "../../img/noresults.png";
+import Grid from "@mui/material/Grid";
+import {useNavigate} from "react-router-dom";
+import MainContainer from "../../components/layout/MainContainer";
 
 export default function ItemSearch() {
     const {loading, items, filter} = useItems()
@@ -13,7 +16,7 @@ export default function ItemSearch() {
         ? <>We hebben {items.length} resultaat gevonden voor jouw zoekopdracht!</>
         : <>We hebben {items.length} resultaten gevonden voor jouw zoekopdracht!</>
 
-    return <>
+    return <MainContainer backTrackableTo={"/"} headerMsg={"Zoeken"}>
         <SearchBar displayResults={false}/>
         <div>
             {loading && <LoadingResults/>}
@@ -25,26 +28,32 @@ export default function ItemSearch() {
 
             {!loading && items.length > 0 && <>
                 <Typography variant={"h6"} sx={{my: 2}}>{msg}</Typography>
-                <div className={"flexElements centerElements"}>
-                    {items.map(item => <ItemCard key={item.id} item={item}/>)}
-                </div>
+                <Grid container spacing={2}>
+                    {items.map(item => <Grid item xs={12} md={4}>
+                        <ItemCard key={item.id} item={item}/>
+                    </Grid>)}
+                </Grid>
             </>}
         </div>
-    </>
+    </MainContainer>
 }
 
 function ItemCard(props: { item: ItemSearchDto }) {
-    return <Card sx={{maxWidth: 250, m: 0.5}}>
-        <CardMedia
-            sx={{height: 100, m: 1}}
-            image={props.item.image}
-            title={props.item.name}
-        />
-        <CardContent>
-            <Typography gutterBottom variant="subtitle1" component="div">
-                {props.item.name}
-            </Typography>
-        </CardContent>
+    const navigate = useNavigate()
+
+    return <Card sx={{width: "100%", cursor: "pointer"}} onClick={() => navigate(`/product/${props.item.id}`)}>
+        <CardActionArea>
+            <CardMedia
+                sx={{height: 100, m: 1}}
+                image={props.item.image}
+                title={props.item.name}
+            />
+            <CardContent>
+                <Typography gutterBottom variant="subtitle1" component="div">
+                    {props.item.name}
+                </Typography>
+            </CardContent>
+        </CardActionArea>
     </Card>
 }
 
