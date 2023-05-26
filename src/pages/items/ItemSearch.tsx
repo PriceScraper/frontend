@@ -1,80 +1,112 @@
 import SearchBar from "../../components/search/SearchBar";
-import {ItemSearchDto} from "../../models/dtos/ItemSearchDto";
-import {Card, CardActionArea, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
+import {
+  Box,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import useItems from "../../hooks/useItems";
-import './../../style/flexElements.scss'
+import "./../../style/flexElements.scss";
 import noResultsImg from "../../img/noresults.png";
-import Grid from "@mui/material/Grid";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MainContainer from "../../components/layout/MainContainer";
+import { Item } from "../../models/Item";
 
 export default function ItemSearch() {
-    const {loading, items, filter} = useItems()
+  const { loading, items, filter } = useItems();
 
-    const msg = items.length === 1
-        ? <>We hebben {items.length} resultaat gevonden voor jouw zoekopdracht!</>
-        : <>We hebben {items.length} resultaten gevonden voor jouw zoekopdracht!</>
+  const msg =
+    items.length === 1 ? (
+      <>We hebben {items.length} resultaat gevonden voor jouw zoekopdracht!</>
+    ) : (
+      <>We hebben {items.length} resultaten gevonden voor jouw zoekopdracht!</>
+    );
 
-    return <MainContainer backTrackableTo={"/"} headerMsg={"Zoeken"}>
-        <SearchBar displayResults={false}/>
-        <div>
-            {loading && <LoadingResults/>}
+  return (
+    <MainContainer backTrackableTo={"/"} headerMsg={"Zoeken"}>
+      <SearchBar displayResults={false} />
+      {loading && <LoadingResults />}
 
-            {!loading && items.length === 0 && filter.length >= 3
-                && <FailedToFindItemsForSearch/>}
-            {!loading && items.length === 0 && filter.length < 3
-                && <>We kunnen pas producten voor u opzoeken wanneer u minstens 3 karakters ingevuld hebt!</>}
+      {!loading && items.length === 0 && filter.length >= 3 && (
+        <FailedToFindItemsForSearch />
+      )}
+      {!loading && items.length === 0 && filter.length < 3 && (
+        <>
+          We kunnen pas producten voor u opzoeken wanneer u minstens 3 karakters
+          ingevuld hebt!
+        </>
+      )}
 
-            {!loading && items.length > 0 && <>
-                <Typography variant={"h6"} sx={{my: 2}}>{msg}</Typography>
-                <Grid container spacing={2}>
-                    {items.map(item => <Grid item xs={12} md={4}>
-                        <ItemCard key={item.id} item={item}/>
-                    </Grid>)}
-                </Grid>
-            </>}
-        </div>
+      {!loading && items.length > 0 && (
+        <>
+          <Typography variant={"h6"} sx={{ my: 2 }}>
+            {msg}
+          </Typography>
+          <SearchList items={items} />
+        </>
+      )}
     </MainContainer>
+  );
 }
 
-function ItemCard(props: { item: ItemSearchDto }) {
-    const navigate = useNavigate()
-
-    return <Card sx={{width: "100%", cursor: "pointer"}} onClick={() => navigate(`/product/${props.item.id}`)}>
-        <CardActionArea>
-            <CardMedia
-                sx={{height: 100, m: 1}}
-                image={props.item.image}
-                title={props.item.name}
+function SearchList({ items }: { items: Item[] }) {
+  const navigate = useNavigate();
+  return (
+    <Box sx={{ width: "100%", height: 350, overflowY: "scroll" }}>
+      <ImageList variant="masonry" cols={3} gap={12}>
+        {items.map((item) => (
+          <ImageListItem sx={{ cursor: "pointer" }} key={item.image}>
+            <img
+              onClick={() => navigate(`/product/${item.id}`)}
+              src={`${item.image}`}
+              alt={item.name}
             />
-            <CardContent>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                    {props.item.name}
-                </Typography>
-            </CardContent>
-        </CardActionArea>
-    </Card>
+            <ImageListItemBar
+              sx={{ textAlign: "center", fontSize: "1.1rem", fontWeight: 500 }}
+              position="below"
+              title={item.name}
+            />
+          </ImageListItem>
+        ))}
+      </ImageList>
+    </Box>
+  );
 }
 
 export function FailedToFindItemsForSearch() {
-    return <div className={"flexElements centerElements"}>
-        <div>
-            <div className={"flexElements centerElements"}>
-                <img src={noResultsImg} alt={"no results"} height={150} style={{margin: 30}}/>
-            </div>
-            <Typography>We konden dit product niet vinden in de rekken!</Typography>
+  return (
+    <div className={"flexElements centerElements"}>
+      <div>
+        <div className={"flexElements centerElements"}>
+          <img
+            src={noResultsImg}
+            alt={"no results"}
+            height={150}
+            style={{ margin: 30 }}
+          />
         </div>
+        <Typography>We konden dit product niet vinden in de rekken!</Typography>
+      </div>
     </div>
+  );
 }
 
 export function LoadingResults() {
-    return <div className={"flexElements centerElements"}>
-        <div>
-            <div className={"flexElements centerElements"}>
-                <CircularProgress size={100} sx={{m: 3}}/>
-            </div>
-            <Typography>We zijn jouw zoekopdracht aan het verwerken!</Typography>
-        </div>
+  return (
+    <div className={"flexElements centerElements"}>
+      <Typography>We zijn jouw zoekopdracht aan het verwerken!</Typography>
+      <Box sx={{ width: "100%", height: 350, overflowY: "scroll" }}>
+        <ImageList variant="masonry" cols={3} gap={12}>
+          {Array.from(Array(5).keys()).map((i) => (
+            <ImageListItem key={i} sx={{ cursor: "pointer" }}>
+              <Skeleton variant="rectangular" width={200} height={250} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Box>
     </div>
+  );
 }
