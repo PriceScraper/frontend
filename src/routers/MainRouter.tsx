@@ -8,11 +8,18 @@ import ItemSearch from "../pages/items/ItemSearch";
 import SettingsPage from "../pages/settings/SettingsPage";
 import {SettingsProvider} from "../hooks/useSettings";
 import RecipeRouter from "./RecipeRouter";
+import ScanItem from "../pages/items/ScanItem";
 
 export default function MainRouter() {
     return (
         <Routes>
             <Route index element={<Home/>}/>
+            <Route
+                path={"/product/scan"}
+                element={
+                    <ScanItem/>
+                }
+            />
             <Route
                 path={"/product/:itemId"}
                 element={
