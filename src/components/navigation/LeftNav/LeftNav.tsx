@@ -49,10 +49,11 @@ export default function LeftNav({open, toggleDrawer, setOpen}: {
         </Toolbar>
         <Divider/>
         <List component="nav">
-            <LeftNavItem path="/" text="Start" icon={<HomeIcon/>}/>
-            <LeftNavItem path="/Shopping-Lists" text="Boodschappenlijst" icon={<LocalGroceryStoreIcon/>}/>
-            <LeftNavItem path="/Recipes" text="Recepten" icon={<MenuBookIcon/>}/>
-            <LeftNavItem path="/product/Scan" text="Scan product" icon={<CropFreeIcon/>}/>
+            <LeftNavItem path="/" text="Start" icon={<HomeIcon/>} allowAnonymous={true}/>
+            <LeftNavItem path="/Shopping-Lists" text="Boodschappenlijst" icon={<LocalGroceryStoreIcon/>}
+                         allowAnonymous={false}/>
+            <LeftNavItem path="/Recipes" text="Recepten" icon={<MenuBookIcon/>} allowAnonymous={false}/>
+            <LeftNavItem path="/product/Scan" text="Scan product" icon={<CropFreeIcon/>} allowAnonymous={true}/>
             {!isAuthenticated && <>
                 <Divider sx={{my: 1}}/>
                 <LeftNavItemExternalUrl url={`${process.env.REACT_APP_BACKEND_URL}`} text="Login" icon={<LoginIcon/>}/>
