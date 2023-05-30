@@ -8,13 +8,15 @@ const ItemContext = createContext<{
     items: Item[]
     filter: String
     loading: boolean
-    setFilter: (e: string) => void
+    setFilter: (e: string) => void,
+    potentialItems: number
 }>({
     items: [],
     filter: "",
     loading: false,
     setFilter: () => {
-    }
+    },
+    potentialItems: 0
 })
 
 export default function useItems() {
@@ -26,6 +28,7 @@ export function ItemProvider(props: { children: React.ReactNode }) {
     const [filter, setFilter] = useState('');
     const [value] = useDebounce(filter, 500);
     const [loading, setLoading] = useState(false)
+    const [potentialItems, setPotentialItems] = useState(0)
     const {enqueueSnackbar} = useSnackbar()
 
     useEffect(() => {
@@ -52,7 +55,27 @@ export function ItemProvider(props: { children: React.ReactNode }) {
         }
     }, [value, enqueueSnackbar])
 
-    return <ItemContext.Provider value={{items, filter, setFilter, loading}}>
+    useEffect(() => {
+        setPotentialItems(0)
+        if (isValidFilter(value)) {
+            setTimeout(() => {
+                if (loading) {
+                    axios
+                        .get<{ count: number }>(`/items/potential?q=${value}`)
+                        .then(res => {
+                            setPotentialItems(res.data.count)
+                        })
+                        .catch(err => {
+                            console.log(err)
+                        })
+                }
+            }, 4000)
+        } else {
+            setPotentialItems(0)
+        }
+    }, [value, loading])
+
+    return <ItemContext.Provider value={{items, filter, setFilter, loading, potentialItems}}>
         {props.children}
     </ItemContext.Provider>
 }
