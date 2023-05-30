@@ -58,9 +58,11 @@ function SearchList({ items }: { items: Item[] }) {
     <Box sx={{ width: "100%", height: 350, overflowY: "scroll" }}>
       <ImageList variant="masonry" cols={3} gap={12}>
         {items.map((item) => (
-          <ImageListItem sx={{ cursor: "pointer" }} key={item.image}>
+          <ImageListItem key={item.id} sx={{ cursor: "pointer" }}>
             <img
-              onClick={() => navigate(`/product/${item.id}`)}
+              onClick={() =>
+                navigate(`/item/${item.id}?backTrackableTo=/items/search`)
+              }
               src={`${item.image}`}
               alt={item.name}
             />
