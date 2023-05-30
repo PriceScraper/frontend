@@ -18,7 +18,7 @@ export default function SearchResult({item}: SearchResultProps) {
 
     return (
         <div
-            onClick={() => navigate("/product/" + item.id)}
+            onClick={() => navigate("/item/" + item.id)}
             style={{
                 cursor: "pointer",
                 paddingTop: "0.2rem",
