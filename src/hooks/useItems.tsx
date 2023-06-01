@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useMemo, useState} from "react";
 import {useDebounce} from 'use-debounce';
 import {Item} from "../models/Item";
 import axios from "axios";
@@ -10,13 +10,15 @@ const ItemContext = createContext<{
     loading: boolean
     setFilter: (e: string) => void,
     potentialItems: number
+    noResults: boolean
 }>({
     items: [],
     filter: "",
     loading: false,
     setFilter: () => {
     },
-    potentialItems: 0
+    potentialItems: 0,
+    noResults: false
 })
 
 export default function useItems() {
@@ -30,6 +32,11 @@ export function ItemProvider(props: { children: React.ReactNode }) {
     const [loading, setLoading] = useState(false)
     const [potentialItems, setPotentialItems] = useState(0)
     const {enqueueSnackbar} = useSnackbar()
+    const [typing, setTyping] = useState(false)
+
+    useEffect(() => {
+        setTyping(false)
+    }, [value])
 
     useEffect(() => {
         try {
@@ -50,7 +57,8 @@ export function ItemProvider(props: { children: React.ReactNode }) {
                 if (value.length > 0 && value.length < 3)
                     enqueueSnackbar("Je moet minstens 3 karakters invullen voordat we beginnen te zoeken!", {variant: "info"})
             }
-        } catch {
+        } catch (e: any) {
+            console.log("Error: ", e)
             setLoading(false)
         }
     }, [value, enqueueSnackbar])
@@ -75,7 +83,15 @@ export function ItemProvider(props: { children: React.ReactNode }) {
         }
     }, [value, loading])
 
-    return <ItemContext.Provider value={{items, filter, setFilter, loading, potentialItems}}>
+    const noResults = useMemo(() => items.length === 0 && filter.length > 0 && !typing, [typing, items.length, filter.length])
+
+    function setFilterHandler(val: string) {
+        if (!typing) setTyping(true)
+        setFilter(val)
+    }
+
+    return <ItemContext.Provider
+        value={{items, filter, setFilter: setFilterHandler, loading, potentialItems, noResults}}>
         {props.children}
     </ItemContext.Provider>
 }

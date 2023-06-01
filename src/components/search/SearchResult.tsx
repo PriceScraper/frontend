@@ -7,7 +7,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Typography from "@mui/material/Typography";
 import LinearProgress from '@mui/material/LinearProgress';
 import useItemSearchProgress from "../../hooks/useItemSearchProgress";
-
+import noResultsImg from "./../../img/noresults.png"
 
 interface SearchResultProps {
     item: ItemSearchDto;
@@ -65,6 +65,21 @@ export function SearchResultsLoading() {
                             {progress > 0 && <LinearProgress variant="determinate" value={progress}/>}
                         </div>
                     }
+                </Grid2>
+            </Grid2>
+        </div>
+    );
+}
+
+export function NoSearchResults() {
+    return (
+        <div style={{cursor: "pointer"}}>
+            <Grid2 container spacing={2} className={"search-result-container"}>
+                <Grid2 xs={4}>
+                    <img src={noResultsImg} alt={"no results"} style={{opacity: "70%", margin: 2}}/>
+                </Grid2>
+                <Grid2 xs={8} sx={{p: 1}}>
+                    <div>We hebben hier geen resultaten voor kunnen vinden!</div>
                 </Grid2>
             </Grid2>
         </div>

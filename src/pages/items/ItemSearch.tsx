@@ -11,7 +11,7 @@ import useItemSearchProgress from "../../hooks/useItemSearchProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 
 export default function ItemSearch() {
-    const {loading, items, filter} = useItems();
+    const {loading, items, filter, noResults} = useItems();
 
     const msg =
         items.length === 1 ? (
@@ -25,7 +25,7 @@ export default function ItemSearch() {
             <SearchBar displayResults={false}/>
             {loading && <LoadingResults/>}
 
-            {!loading && items.length === 0 && filter.length >= 3 && (
+            {!loading && noResults && (
                 <FailedToFindItemsForSearch/>
             )}
             {!loading && items.length === 0 && filter.length < 3 && (
