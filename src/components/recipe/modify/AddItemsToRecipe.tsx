@@ -5,10 +5,12 @@ import {IconButton, Typography} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import {useSnackbar} from "notistack";
+import usePreparedMediaQuery from "../../../hooks/usePreparedMediaQuery";
 
 export default function AddItemsToRecipe({recipe, setRecipe}: { recipe: Recipe, setRecipe: (e: Recipe) => void }) {
     const {items} = useItems()
     const {enqueueSnackbar} = useSnackbar()
+    const {isBigScreen, isMediumScreen} = usePreparedMediaQuery()
 
     function handleAddItem(itemId: number) {
         axios.post<Recipe>("/recipe/item/add", {recipeId: recipe.id, itemId: itemId})
@@ -16,7 +18,13 @@ export default function AddItemsToRecipe({recipe, setRecipe}: { recipe: Recipe, 
             .catch(err => enqueueSnackbar(`${err.message}`, {variant: "error"}))
     }
 
-    return <div style={{height: "70vh", overflowY: "auto"}}>
+    const height = isBigScreen
+        ? "70vh"
+        : isMediumScreen
+            ? "50vh"
+            : "30vh"
+
+    return <div style={{maxHeight: height, overflowY: "auto"}}>
         {items.map(i => <AddItemCard key={i.id} item={i} onAdd={() => handleAddItem(i.id)}/>)}
     </div>
 }
