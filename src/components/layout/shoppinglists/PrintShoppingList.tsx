@@ -15,7 +15,7 @@ export default function PrintShoppingListButton({lines, title}: { title: string,
     });
 
     return <>
-        <IconButton sx={{color: "rgba(0, 0, 0, 0.87)"}} onClick={handlePrint}>
+        <IconButton disabled={lines.length === 0} sx={{color: "rgba(0, 0, 0, 0.87)"}} onClick={handlePrint}>
             <PrintIcon/>
         </IconButton>
         <div style={{display: "none"}}>

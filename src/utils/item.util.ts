@@ -4,24 +4,33 @@ import {getShopNameFromDomain} from "./shop.util";
 import {ItemPrice} from "../models/ItemPrice";
 
 export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
-  if (trackedItems.length === 0)
-    throw new Error("can't find lowest price of empty tracked items array");
-  return trackedItems.reduce((prev, current) => {
-    if (current.itemPrices.length === 0)
-      throw new Error("can't lowest price of empty prices array");
-    return prev.itemPrices[0].price <= current.itemPrices[0].price
-      ? prev
-      : current;
-  });
+    if (trackedItems.length === 0)
+        throw new Error("can't find lowest price of empty tracked items array");
+    return trackedItems.reduce((prev, current) => {
+        if (current.itemPrices.length === 0)
+            throw new Error("can't lowest price of empty prices array");
+        return prev.itemPrices[0].price <= current.itemPrices[0].price
+            ? prev
+            : current;
+    });
 }
 
 export function getWhiteListedTrackedItemsForItem(
-  item: Item,
-  whiteListedShops: string[]
+    item: Item,
+    whiteListedShops: string[]
 ) {
-  return item.trackedItems.filter((trackedItem) =>
-    whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
-  );
+    return item.trackedItems.filter((trackedItem) =>
+        whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
+    );
+}
+
+export function shortenNameIfTooLong(name: string) {
+    const useLength = 25
+    if (name.length < useLength) return name
+    name = name.replace("Carrefour", "")
+    name = name.replace("AH", "")
+    if (name.length < useLength) return name
+    return `${name.substring(0, useLength - 3)}...`
 }
 
 export function orderedPrices(prices: ItemPrice[]) {
