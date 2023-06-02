@@ -7,15 +7,18 @@ import {
     storeRefreshToken
 } from "../functions/authTokenStorage";
 import initAxiosInterceptors from "../config/axios.config";
+import useInterval from "./useInterval";
 
 export default function useAuthToken() {
     const [accessToken, setAccessToken] = useState<string | null>(getAccessToken())
-    const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshToken())
+    useInterval(() => {
+        //console.log("Updating access token, new: ", getAccessToken())
+        setAccessToken(getAccessToken())
+    }, 55)
 
     function removeTokens() {
         eraseTokens()
         setAccessToken(null)
-        setRefreshToken(null)
     }
 
     function handleAccessTokenChange(val: string | null) {
@@ -33,7 +36,6 @@ export default function useAuthToken() {
             return;
         }
         storeRefreshToken(val)
-        setRefreshToken(val)
     }
 
     function handleChange(refresh: string | null, access: string | null) {
@@ -42,5 +44,5 @@ export default function useAuthToken() {
         initAxiosInterceptors()
     }
 
-    return {accessToken, refreshToken, setTokens: handleChange}
+    return {accessToken, refreshToken: getRefreshToken(), setTokens: handleChange}
 }
