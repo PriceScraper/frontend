@@ -19,9 +19,10 @@ const Auth = createContext<{
     },
     user: null
 })
-export function AuthProvider(props:{children:React.ReactNode}) {
+
+export function AuthProvider(props: { children: React.ReactNode }) {
     const tokenHandler = useAuthToken()
-    useInterval(refreshTokens, 60 * 2) //60s * 5 = 5min
+    useInterval(refreshTokens, 60) //1min
 
     const isAuthenticated = useMemo(() => {
         return tokenHandler.accessToken !== null
@@ -46,6 +47,7 @@ export function AuthProvider(props:{children:React.ReactNode}) {
             }>("/auth/refresh", {refreshToken: tokenHandler.refreshToken})
             .then(res => tokenHandler.setTokens(res.data.refreshToken, res.data.accessToken))
             .catch(err => console.log(err.message))
+        //console.log("Refreshing tokens, new refresh: ", tokenHandler.refreshToken)
     }
 
     return <Auth.Provider value={{
