@@ -44,7 +44,7 @@ export function ItemProvider(props: { children: React.ReactNode }) {
                 setLoading(true)
                 setItems([])
                 axios
-                    .get<Item[]>(`/items?name=${value}`)
+                    .get<Item[]>(`/items?name=${value}`, {timeout: 0})
                     .then(res => {
                         setItems(res.data)
                         setLoading(false)
