@@ -2,10 +2,11 @@ import {Collapse, FormControl, Input, InputAdornment} from "@mui/material";
 import useItems from "../../hooks/useItems";
 import SearchResult, {NoSearchResults, SearchResultsLoading, SeeAllResults,} from "./SearchResult";
 import "../../style/Search.scss";
-import {Search} from "@mui/icons-material";
-import {useState} from "react";
+import { Search } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import Divider from "@mui/material/Divider";
+import { useSearchParams } from "react-router-dom";
 
 export default function SearchBar({
                                       displayResults = true,
@@ -14,6 +15,14 @@ export default function SearchBar({
 }) {
     const {filter, setFilter, loading} = useItems();
     const [isFocused, setFocused] = useState(false);
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        const searchQuery = searchParams.get("q");
+        if (searchQuery != null) {
+            setFilter(searchQuery);
+        }
+    }, [searchParams]);
 
     return (
         <>
