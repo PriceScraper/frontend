@@ -88,7 +88,6 @@ export function ItemProvider(props: { children: React.ReactNode }) {
     }, [value, loading])
 
     const noResults = useMemo(() => items.length === 0 && filter.length > 0 && !typing, [typing, items.length, filter.length])
-    console.log("noResults", noResults)
 
     function setFilterHandler(val: string) {
         if (loading) {
