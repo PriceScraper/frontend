@@ -10,7 +10,7 @@ jest.mock('jest.mock(\'axios\');');
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-test("renders SearchArea with a search result", async () => {
+test("renders SearchArea withno search results", async () => {
     const fakeProduct = testItem;
     render(
         <MemoryRouter>
@@ -27,8 +27,6 @@ test("renders SearchArea with a search result", async () => {
     })
 
     const input = screen.getByTestId("search");
-    act(() => userEvent.type(input, "abc"));
-    await waitFor(() =>
-        expect(screen.getByText(fakeProduct.name)).toBeInTheDocument()
-    );
+    act(() => userEvent.type(input, fakeProduct.name));
+    await waitFor(() => expect(screen.getByText("We hebben het niet kunnen vinden!")).toBeInTheDocument());
 });

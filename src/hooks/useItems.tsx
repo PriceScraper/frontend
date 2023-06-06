@@ -3,6 +3,7 @@ import {useDebounce} from 'use-debounce';
 import {Item} from "../models/Item";
 import axios from "axios";
 import {useSnackbar} from "notistack";
+import loadCancelToken from "../functions/loadCancelToken";
 
 const ItemContext = createContext<{
     items: Item[]
@@ -25,6 +26,9 @@ export default function useItems() {
     return useContext(ItemContext)
 }
 
+let source = loadCancelToken()
+const cancelMsg = "Filter value has changed"
+
 export function ItemProvider(props: { children: React.ReactNode }) {
     const [items, setItems] = useState<Item[]>([])
     const [filter, setFilter] = useState('');
@@ -44,13 +48,13 @@ export function ItemProvider(props: { children: React.ReactNode }) {
                 setLoading(true)
                 setItems([])
                 axios
-                    .get<Item[]>(`/items?name=${value}`, {timeout: 0})
+                    .get<Item[]>(`/items?name=${value}`, {timeout: 0, cancelToken: source.token})
                     .then(res => {
                         setItems(res.data)
                         setLoading(false)
                     })
                     .catch(err => {
-                        enqueueSnackbar(err, {variant: "error"})
+                        if (`${err.name}` !== "CanceledError") enqueueSnackbar(err.message, {variant: "error"})
                     })
             } else {
                 setItems([])
@@ -69,7 +73,7 @@ export function ItemProvider(props: { children: React.ReactNode }) {
             setTimeout(() => {
                 if (loading) {
                     axios
-                        .get<{ count: number }>(`/items/potential?q=${value}`)
+                        .get<{ count: number }>(`/items/potential?q=${value}`, {cancelToken: source.token})
                         .then(res => {
                             setPotentialItems(res.data.count)
                         })
@@ -84,8 +88,14 @@ export function ItemProvider(props: { children: React.ReactNode }) {
     }, [value, loading])
 
     const noResults = useMemo(() => items.length === 0 && filter.length > 0 && !typing, [typing, items.length, filter.length])
+    console.log("noResults", noResults)
 
     function setFilterHandler(val: string) {
+        if (loading) {
+            source.cancel(cancelMsg)
+            source = loadCancelToken()
+            setLoading(false)
+        }
         if (!typing) setTyping(true)
         setFilter(val)
     }
