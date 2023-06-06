@@ -6,6 +6,7 @@ import {ShoppingListLine} from "../../../models/ShoppingListLine";
 import {getShopLogoUrlByName} from "../../../utils/shop.util";
 import {useReactToPrint} from "react-to-print";
 import {useRef} from "react";
+import {limitShops} from "../../../utils/item.util";
 
 export default function PrintShoppingListButton({lines, title}: { title: string, lines: ShoppingListLine[] }) {
     const componentRef = useRef(null);
@@ -44,7 +45,7 @@ export function PrintShoppingListLayout(props: { title: string, lines: ShoppingL
                 <Grid item sm={9}>
                     <span>{line.item.name}</span>
                     <div className={"flexElements"}>
-                        {line.item.trackedItems
+                        {limitShops(line.item.trackedItems)
                             .sort((a, b) => a.itemPrices[0].price - b.itemPrices[0].price)
                             .map(ti => <div key={counter++}>
                                 <img src={getShopLogoUrlByName(ti.shop.name)} height={"10px"} alt={ti.shop.name}/>

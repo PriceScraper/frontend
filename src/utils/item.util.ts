@@ -2,6 +2,7 @@ import {TrackedItem} from "../models/TrackedItem";
 import {Item} from "../models/Item";
 import {getShopNameFromDomain} from "./shop.util";
 import {ItemPrice} from "../models/ItemPrice";
+import {max, mean} from "./number.util";
 
 export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
     if (trackedItems.length === 0)
@@ -22,6 +23,40 @@ export function getWhiteListedTrackedItemsForItem(
     return item.trackedItems.filter((trackedItem) =>
         whiteListedShops.includes(getShopNameFromDomain(trackedItem.shop.name))
     );
+}
+
+export function limitShops(trackedItems: TrackedItem[]) {
+    let items: TrackedItem[] = []
+    trackedItems.forEach(ti => {
+        if (items.filter(a => a.shop.id === ti.shop.id).length === 0) {
+            items.push(ti)
+        }
+    })
+    return items
+}
+
+export function sortTrackedItemOnPriceAsc(a: TrackedItem, b: TrackedItem) {
+    return orderedPrices(a.itemPrices).reverse()[0].price - orderedPrices(b.itemPrices).reverse()[0].price
+}
+
+export function pricePercentageOnAvg(price: number, items: TrackedItem[]) {
+    const avg = mean(items
+        .map(ti => orderedPrices(ti.itemPrices).reverse()[0].price))
+    const perc = (price / avg) * 100
+    if (perc > 100) return 100
+    if (perc < 0) return 0
+    return perc
+}
+
+
+export function pricePercentageOnMax(price: number, items: TrackedItem[]) {
+    const prices = items.map(ti => orderedPrices(ti.itemPrices).reverse()[0].price)
+    const maxPrice = max(prices)
+    if (maxPrice === 0) return price
+    const perc = (price / maxPrice) * 100
+    if (perc > 100) return 100
+    if (perc < 0) return 0
+    return perc
 }
 
 export function shortenNameIfTooLong(name: string) {
