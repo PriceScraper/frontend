@@ -45,6 +45,7 @@ export default function MainRouter() {
             <Route path={"/login"} element={<Login/>}/>
             <Route path={"/auth/:refreshToken/:accessToken"} element={<Login/>}/>
             <Route path={"/logout"} element={<Logout/>}/>
+            <Route path={"/index.html"} element={<Home/>}/>
             <Route path={"*"} element={<Error404/>}/>
         </Routes>
     );
