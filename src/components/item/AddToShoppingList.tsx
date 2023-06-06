@@ -1,19 +1,21 @@
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import {Avatar, Menu, MenuItem, Snackbar} from "@mui/material";
+import {Avatar, Menu, MenuItem} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useMutation, useQuery} from "react-query";
 import {addItemToShoppingList, fetchShoppingListForUser} from "../../services/shoppinglist.service";
 import {Item} from "../../models/Item";
 import {useState} from "react";
-import {SlideTransition} from "../layout/transitions/Transitions";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import LoopIcon from '@mui/icons-material/Loop';
 import AddRecurringItemModal from "./AddRecurringItemModal";
+import {useSnackbar} from "notistack";
+import LaunchIcon from '@mui/icons-material/Launch';
 
 export default function AddToShoppingList(props: { item: Item | undefined }) {
     const [recurringItemModalOpen, setRecurringItemModalOpen] = useState(false)
-    const [snackBarOpen, setSnackBarOpen] = useState(false);
+    const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+    const navigate = useNavigate()
     const {
         isLoading: isShoppingListsLoading,
         isError: isShoppingListsError,
@@ -26,22 +28,10 @@ export default function AddToShoppingList(props: { item: Item | undefined }) {
             quantity: number;
         }) =>
             addItemToShoppingList(data.shoppingListId, data.itemId, data.quantity),
-        onSuccess: () => {
-            setSnackBarOpen(true);
-        },
+        onSuccess
     });
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const handleSnackBarClose = (
-        event: React.SyntheticEvent | Event,
-        reason?: string
-    ) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setSnackBarOpen(false);
-    };
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -52,6 +42,19 @@ export default function AddToShoppingList(props: { item: Item | undefined }) {
     if (props.item?.id === undefined) return <></>
     if (isShoppingListsLoading) return <></>;
     if (isShoppingListsError) return <></>;
+
+    function onSuccess() {
+        enqueueSnackbar(`${props?.item?.name ?? ''} is toegevoegd aan uw boodschappenlijst`,
+            {
+                variant: "info",
+                action: (<IconButton onClick={() => {
+                    navigate("/shopping-lists")
+                    closeSnackbar()
+                }} sx={{color: "inherit"}}>
+                    <LaunchIcon/>
+                </IconButton>)
+            })
+    }
 
     return <>
         <AddRecurringItemModal open={recurringItemModalOpen} handleClose={() => setRecurringItemModalOpen(false)}
@@ -118,21 +121,6 @@ export default function AddToShoppingList(props: { item: Item | undefined }) {
                     <Typography>{shoppingList.title}</Typography>
                 </MenuItem>
             ))}
-            <Snackbar
-                sx={{fontSize: "1.1rem"}}
-                open={snackBarOpen}
-                TransitionComponent={SlideTransition}
-                autoHideDuration={6000}
-                onClose={handleSnackBarClose}
-                message={
-                    <p>
-                        {props.item.name} is toegevoegd aan{" "}
-                        <Link style={{color: "#FFF"}} to={"/shopping-lists"}>
-                            uw boodschappenlijst
-                        </Link>{" "}
-                    </p>
-                }
-            />
         </Menu>
     </>
 }
