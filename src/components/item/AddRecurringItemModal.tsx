@@ -71,7 +71,10 @@ function ChangeQuantityBtn(props: { handleChange: (e: 1 | -1) => void, changeBy:
 
 function Caption() {
     return <Typography variant={"caption"}>
-        Dit item zal aan al uw shopping lists toegevoegd worden, en u zal dit manueel per shopping list kunnen wijzigen.
+        Dit product zal automatisch aan al uw boodschappenlijsten toegevoegd worden.
+        U kunt de hoeveelheid van dit product manueel per boodschappenlijst wijzigen.
+        Indien u het product niet meer automatisch in uw boodschappenlijst toegevoegd wilt hebben
+        kunt u dit verwijderen op de Instellingen pagina.
     </Typography>
 }
 
