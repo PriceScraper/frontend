@@ -26,10 +26,7 @@ export default function SearchBar({
                     sx={{p: 0.5, fontSize: 20}}
                     placeholder={"Zoek product"}
                     value={filter}
-                    onChange={loading
-                        ? () => {
-                        }
-                        : (e) => setFilter(e.target.value)
+                    onChange={e => setFilter(e.target.value)
                     }
                     endAdornment={
                         <InputAdornment position="end">

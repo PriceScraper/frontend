@@ -46,8 +46,7 @@ export function SearchArea(props: { setRecipe: (e: Recipe) => void, recipe: Reci
     const {filter, setFilter, loading, noResults} = useItems()
     const {isSmallScreen} = usePreparedMediaQuery()
     return <Grid item md={4} sx={isSmallScreen ? {width: "100%"} : {}}>
-        <TextField disabled={loading}
-                   fullWidth
+        <TextField fullWidth
                    variant={"standard"}
                    label={"Zoek ingrediënt"}
                    value={filter}
