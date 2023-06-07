@@ -2,7 +2,7 @@ import {TrackedItem} from "../models/TrackedItem";
 import {Item} from "../models/Item";
 import {getShopNameFromDomain} from "./shop.util";
 import {ItemPrice} from "../models/ItemPrice";
-import {max, mean} from "./number.util";
+import {max} from "./number.util";
 
 export function findTrackedItemWithLowestPrice(trackedItems: TrackedItem[]) {
     if (trackedItems.length === 0)
@@ -39,16 +39,6 @@ export function sortTrackedItemOnPriceAsc(a: TrackedItem, b: TrackedItem) {
     return orderedPrices(a.itemPrices).reverse()[0].price - orderedPrices(b.itemPrices).reverse()[0].price
 }
 
-export function pricePercentageOnAvg(price: number, items: TrackedItem[]) {
-    const avg = mean(items
-        .map(ti => orderedPrices(ti.itemPrices).reverse()[0].price))
-    const perc = (price / avg) * 100
-    if (perc > 100) return 100
-    if (perc < 0) return 0
-    return perc
-}
-
-
 export function pricePercentageOnMax(price: number, items: TrackedItem[]) {
     const prices = items.map(ti => orderedPrices(ti.itemPrices).reverse()[0].price)
     const maxPrice = max(prices)
@@ -59,13 +49,13 @@ export function pricePercentageOnMax(price: number, items: TrackedItem[]) {
     return perc
 }
 
-export function shortenNameIfTooLong(name: string) {
-    const useLength = 25
-    if (name.length < useLength) return name
+export function shortenNameIfTooLong(name: string, chars: number = 25) {
+    if (name.length < chars) return name
     name = name.replace("Carrefour", "")
     name = name.replace("AH", "")
-    if (name.length < useLength) return name
-    return `${name.substring(0, useLength - 3)}...`
+    name = name.trim()
+    if (name.length < chars) return name
+    return `${name.substring(0, chars - 3).trim()}...`
 }
 
 export function orderedPrices(prices: ItemPrice[]) {

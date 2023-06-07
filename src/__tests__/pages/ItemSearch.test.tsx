@@ -1,5 +1,5 @@
 import {render} from "@testing-library/react";
-import ItemSearch, {FailedToFindItemsForSearch, LoadingResults} from "../../pages/items/ItemSearch";
+import ItemSearch, {FailedToFindItemsForSearch} from "../../pages/items/ItemSearch";
 import {ItemProvider} from "../../hooks/useItems";
 import {MemoryRouter} from "react-router-dom";
 
@@ -9,9 +9,4 @@ test("Page renders", () => {
 
 test("FailedToFindItemsForSearch renders", () => {
     render(<FailedToFindItemsForSearch/>);
-});
-
-
-test("LoadingResults renders", () => {
-    render(<LoadingResults/>);
 });
