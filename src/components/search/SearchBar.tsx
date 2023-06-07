@@ -22,7 +22,8 @@ export default function SearchBar({
         if (searchQuery != null) {
             setFilter(searchQuery);
         }
-    }, [searchParams, setFilter]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams]);
 
     return (
         <>
