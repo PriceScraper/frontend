@@ -25,13 +25,14 @@ export default function ItemSearch() {
     ) : (
       <>We hebben {items.length} resultaten gevonden voor jouw zoekopdracht!</>
     );
+  console.log(loading);
 
   return (
     <>
       <MainContainer backTrackableTo={"/"} headerMsg={"Zoeken"} large={true}>
         <SearchBar displayResults={false} />
         {loading && (
-          <div style={{ marginTop: 20 }}>
+          <div id="items-loading" style={{ marginTop: 20 }}>
             <LoadingArea />
           </div>
         )}
