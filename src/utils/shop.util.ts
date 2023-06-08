@@ -8,6 +8,8 @@ export function getShopLogoUrlByName(name: string) {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Lidl-Logo.svg/2048px-Lidl-Logo.svg.png",
         "ah.be":
             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Albert_Heijn_Logo.svg/1000px-Albert_Heijn_Logo.svg.png",
+        "q91pg5kgq322k.eu-west-3.cs.amazonlightsail.com":
+            "/xplore_logo.svg",
     }[name.toLowerCase()];
 }
 
@@ -17,6 +19,7 @@ export function getShopDominantColorByName(name: string) {
         "aldi.be": "#00B5DD",
         "lidl.be": "#FFF000",
         "ah.be": "#00A0E2",
+        "q91pg5kgq322k.eu-west-3.cs.amazonlightsail.com": "#17bb00",
     }[name.toLowerCase()];
 }
 
