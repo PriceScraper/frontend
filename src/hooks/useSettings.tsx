@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 
-const availableShops = ["carrefour", "ah"];
+const availableShops = ["carrefour", "ah", "q91pg5kgq322k"];
 
 interface Settings {
     whiteListedShops: string[];
