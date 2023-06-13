@@ -3,8 +3,8 @@ import MainContainer from "../../components/layout/MainContainer";
 import ShoppingListCard from "../../components/layout/shoppinglists/ShoppingListCard";
 import React from "react";
 import ShoppingListDialog from "../../components/layout/shoppinglists/ShoppingListDialog";
-import {useQuery} from "react-query";
-import {fetchShoppingListForUser} from "../../services/shoppinglist.service";
+import { useQuery } from "react-query";
+import { fetchShoppingListForUser } from "../../services/shoppinglist.service";
 import AddShoppingListCard from "../../components/layout/shoppinglists/AddShoppingListCard";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Typography from "@mui/material/Typography";
@@ -52,7 +52,7 @@ export default function ShoppingListsOverview() {
               <ShoppingListCard
                 listNumber={index + 1}
                 shoppingList={shoppingList}
-                whiteListedShops={whiteListedShops}
+                whiteListedShops={whiteListedShops.map((ws) => ws.shopId)}
               />
             </div>
             <ShoppingListDialog
@@ -65,7 +65,7 @@ export default function ShoppingListsOverview() {
                   [shoppingList.id]: false,
                 }))
               }
-              whiteListedShops={whiteListedShops}
+              whiteListedShops={whiteListedShops.map((ws) => ws.shopId)}
               dialogIsOpen={
                 shoppingListDialogIsOpen[shoppingList.id] !== undefined
                   ? shoppingListDialogIsOpen[shoppingList.id]
