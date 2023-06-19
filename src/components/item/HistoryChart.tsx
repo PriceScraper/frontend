@@ -53,7 +53,7 @@ export default function HistoryChart(props: { trackedItems: TrackedItem[] }) {
             .map((ti) => {
               return {
                 name:
-                  ti.shop.name !=
+                  ti.shop.name !==
                   "q91pg5kgq322k.eu-west-3.cs.amazonlightsail.com"
                     ? ti.shop.name
                     : "delhaize.be",
